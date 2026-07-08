@@ -158,7 +158,7 @@ async function initCategoryPage() {
   function renderGallery(items) {
     const gallery = document.getElementById("gallery");
     const summary = document.getElementById("catSummary");
-    if (summary) summary.textContent = `${items.length} item${items.length !== 1 ? "s" : ""}`;
+    if (summary) summary.textContent = items.length;
     document.getElementById("mediaCount").textContent = String(items.length);
     document.getElementById("favoriteCount").textContent = String(items.filter((i) => i.isFavorite).length);
 
@@ -289,23 +289,19 @@ async function initCategoryPage() {
         </div>
       </div>
 
-      <!-- Stats row -->
-      <div style="display:flex;flex-wrap:wrap;gap:28px;padding:8px 0 20px;border-bottom:1px solid #e0e0e0;margin-bottom:20px;">
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Category</div>
-          <div style="font-size:22px;font-weight:700;color:#212121;margin-top:2px;">${escapeHtml(category.name)}</div>
+      <!-- Stats box -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px;">
+        <div style="padding:14px 16px;border-right:1px solid #f0f0f0;text-align:center;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;">Total Items</div>
+          <div id="catSummary" style="font-size:26px;font-weight:700;color:#212121;margin-top:4px;line-height:1;">—</div>
         </div>
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Total Items</div>
-          <div id="catSummary" style="font-size:22px;font-weight:700;color:#212121;margin-top:2px;">—</div>
+        <div style="padding:14px 16px;border-right:1px solid #f0f0f0;text-align:center;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Media</div>
+          <div id="mediaCount" style="font-size:26px;font-weight:700;color:#2874f0;margin-top:4px;line-height:1;">0</div>
         </div>
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Media</div>
-          <div id="mediaCount" style="font-size:22px;font-weight:700;color:#212121;margin-top:2px;">0</div>
-        </div>
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Favorites</div>
-          <div id="favoriteCount" style="font-size:22px;font-weight:700;color:#e53935;margin-top:2px;">0</div>
+        <div style="padding:14px 16px;text-align:center;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Favorites</div>
+          <div id="favoriteCount" style="font-size:26px;font-weight:700;color:#e53935;margin-top:4px;line-height:1;">0</div>
         </div>
       </div>
 
