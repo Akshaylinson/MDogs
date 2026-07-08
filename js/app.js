@@ -302,6 +302,10 @@ async function initCategoryPage() {
                 <svg id="favIcon" width="15" height="15" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span id="favFilterLabel">Favorites only</span>
               </button>
+
+              <div style="padding:8px 14px;border-top:1px solid #f0f0f0;margin-top:2px;">
+                <button id="resetFilters" style="width:100%;padding:8px 0;border:1px solid #d0d0d0;border-radius:2px;background:#f5f5f5;color:#555;font-size:12px;font-weight:600;cursor:pointer;">↺ Reset Filters</button>
+              </div>
             </div>
           </div>
         </div>
@@ -345,6 +349,46 @@ async function initCategoryPage() {
   });
   filterMenu.addEventListener("click", (e) => e.stopPropagation());
 
+  // helper to sync dropdown visual state
+  function syncFilterUI() {
+    const imgBtn   = document.getElementById("typeImage");
+    const vidBtn   = document.getElementById("typeVideo");
+    const allBtn   = document.getElementById("typeAll");
+    const favBtn   = document.getElementById("favoriteFilter");
+    const favIcon  = document.getElementById("favIcon");
+    const favLabel = document.getElementById("favFilterLabel");
+    const tagSel   = document.getElementById("tag");
+    if (allBtn) { allBtn.style.background = state.type === "all" ? "#2874f0" : "#fff"; allBtn.querySelector("svg").setAttribute("stroke", state.type === "all" ? "white" : "#555"); }
+    if (imgBtn) imgBtn.style.background = state.type === "image" ? "#e8f0fe" : "#fff";
+    if (vidBtn) vidBtn.style.background = state.type === "video" ? "#e8f0fe" : "#fff";
+    if (favBtn)   favBtn.style.background   = state.favorites ? "#fce4e4" : "#fff";
+    if (favIcon)  { favIcon.setAttribute("fill", state.favorites ? "#e53935" : "none"); favIcon.setAttribute("stroke", state.favorites ? "#e53935" : "#555"); }
+    if (favLabel) { favLabel.textContent = state.favorites ? "✓ Favorites only" : "Favorites only"; favLabel.style.color = state.favorites ? "#e53935" : "#333"; }
+    if (tagSel)   tagSel.value = state.tag;
+  }
+
+  document.getElementById("favoriteFilter").addEventListener("click", async () => {
+    state.favorites = !state.favorites;
+    syncFilterUI();
+    filterMenu.style.display = "none";
+    filterMenuBtn.style.background = "#fff";
+    filterMenuBtn.style.borderColor = "#d0d0d0";
+    await refresh();
+    if (state.favorites && !mediaItems.length) notify("No favorites in this category yet");
+  });
+
+  document.getElementById("resetFilters").addEventListener("click", async () => {
+    state.type = "all"; state.favorites = false; state.tag = ""; state.search = "";
+    const searchInput = document.getElementById("search");
+    if (searchInput) searchInput.value = "";
+    syncFilterUI();
+    filterMenu.style.display = "none";
+    filterMenuBtn.style.background = "#fff";
+    filterMenuBtn.style.borderColor = "#d0d0d0";
+    await refresh();
+    notify("Filters reset");
+  });
+
   // Navbar search
   const navSearch = document.getElementById("navbar-search");
   if (navSearch) navSearch.addEventListener("input", (e) => { state.search = e.target.value; refresh(); });
@@ -355,17 +399,7 @@ async function initCategoryPage() {
   // Type icon toggle helpers
   function setTypeActive(type) {
     state.type = type;
-    // Grid button: blue when "all", white otherwise
-    const allBtn = document.getElementById("typeAll");
-    if (allBtn) {
-      allBtn.style.background = type === "all" ? "#2874f0" : "#fff";
-      allBtn.querySelector("svg").setAttribute("stroke", type === "all" ? "white" : "#555");
-    }
-    // Dropdown items: highlight active
-    const imgBtn = document.getElementById("typeImage");
-    const vidBtn = document.getElementById("typeVideo");
-    if (imgBtn) imgBtn.style.background = type === "image" ? "#e8f0fe" : "#fff";
-    if (vidBtn) vidBtn.style.background = type === "video" ? "#e8f0fe" : "#fff";
+    syncFilterUI();
     filterMenu.style.display = "none";
     refresh();
   }
@@ -386,20 +420,7 @@ async function initCategoryPage() {
       return;
     }
 
-    if (btn?.id === "favoriteFilter") {
-      state.favorites = !state.favorites;
-      const favIcon = document.getElementById("favIcon");
-      const favLabel = document.getElementById("favFilterLabel");
-      const favBtn = document.getElementById("favoriteFilter");
-      favBtn.style.background = state.favorites ? "#fce4e4" : "#fff";
-      if (favIcon) { favIcon.setAttribute("fill", state.favorites ? "#e53935" : "none"); favIcon.setAttribute("stroke", state.favorites ? "#e53935" : "#555"); }
-      if (favLabel) favLabel.style.color = state.favorites ? "#e53935" : "#333";
-      filterMenu.style.display = "none";
-      await refresh();
-      return;
-    }
-
-    // Favorite button on card
+// Favorite button on card
     if (btn?.dataset.action === "favorite") {
       e.stopPropagation();
       const item = mediaItems.find((m) => m.id === btn.dataset.id);
