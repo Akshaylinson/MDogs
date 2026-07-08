@@ -1,5 +1,5 @@
 ﻿import { uid, isImageFile, isVideoFile } from "./helpers.js";
-import { put as putRow } from "./db.js";
+import { put as putRow, bulkPut } from "./db.js";
 import { notify } from "./notifications.js";
 import { syncTagsFromMedia } from "./tags.js";
 
@@ -11,21 +11,21 @@ export function validateFile(file) {
 }
 
 async function makeImageThumbnail(file) {
-  const dataUrl = await blobToDataURL(file);
+  const url = URL.createObjectURL(file);
   const img = new Image();
-  img.src = dataUrl;
+  img.src = url;
   await new Promise((resolve, reject) => {
     img.onload = resolve;
     img.onerror = reject;
   });
+  URL.revokeObjectURL(url);
 
   const maxSize = 480;
   const ratio = Math.min(maxSize / img.width, maxSize / img.height, 1);
   const canvas = document.createElement("canvas");
   canvas.width = Math.round(img.width * ratio);
   canvas.height = Math.round(img.height * ratio);
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
 
   return new Promise((resolve) => {
     canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.82);
@@ -48,7 +48,7 @@ export async function addMediaFiles(categoryId, files, onProgress = () => {}) {
     const file = accepted[i];
     const thumbnailBlob = await makeThumbnail(file);
     const now = new Date().toISOString();
-    const media = {
+    created.push({
       id: uid("media"),
       categoryId,
       fileName: file.name,
@@ -64,13 +64,12 @@ export async function addMediaFiles(categoryId, files, onProgress = () => {}) {
       isFavorite: false,
       createdAt: now,
       updatedAt: now,
-    };
-    await putRow("media", media);
-    created.push(media);
+    });
     onProgress(Math.round(((i + 1) / total) * 100), file.name);
   }
 
   if (created.length) {
+    await bulkPut("media", created);
     await syncTagsFromMedia();
     notify(`${created.length} file(s) uploaded`);
   }
