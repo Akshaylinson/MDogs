@@ -20,23 +20,25 @@ const SVG = {
 function navBtn(action, svg, title) {
   return `<button data-action="${action}" title="${title}" style="
     width:44px;height:44px;display:flex;align-items:center;justify-content:center;
-    background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
+    background:#1a1a1a;border:1px solid #333;
     border-radius:2px;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
-    onmouseover="this.style.background='rgba(255,255,255,.26)'"
-    onmouseout="this.style.background='rgba(255,255,255,.13)'"
+    onmouseover="this.style.background='#AAFF20';this.style.borderColor='#AAFF20';this.style.color='#000'"
+    onmouseout="this.style.background='#1a1a1a';this.style.borderColor='#333';this.style.color='#fff'"
   >${svg}</button>`;
 }
 
 function toolBtn(action, svg, title, danger = false) {
-  const bg   = danger ? "rgba(229,57,53,.15)"  : "rgba(255,255,255,.10)";
-  const hbg  = danger ? "#e53935"              : "rgba(255,255,255,.22)";
-  const bdr  = danger ? "rgba(229,57,53,.4)"   : "rgba(255,255,255,.18)";
+  const bg   = danger ? "rgba(229,57,53,.15)"  : "#1a1a1a";
+  const hbg  = danger ? "#e53935"              : "#AAFF20";
+  const bdr  = danger ? "rgba(229,57,53,.5)"   : "#333";
+  const col  = danger ? "#e53935"              : "#fff";
+  const hcol = danger ? "#fff"                 : "#000";
   return `<button data-action="${action}" title="${title}" style="
     width:40px;height:40px;display:flex;align-items:center;justify-content:center;
     background:${bg};border:1px solid ${bdr};
-    border-radius:2px;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
-    onmouseover="this.style.background='${hbg}'"
-    onmouseout="this.style.background='${bg}'"
+    border-radius:2px;cursor:pointer;color:${col};flex-shrink:0;transition:background .15s;"
+    onmouseover="this.style.background='${hbg}';this.style.color='${hcol}';this.style.borderColor='${hbg}'"
+    onmouseout="this.style.background='${bg}';this.style.color='${col}';this.style.borderColor='${bdr}'"
   >${svg}</button>`;
 }
 
@@ -69,19 +71,19 @@ export function openViewer(items, startIndex = 0, options = {}) {
 
       <!-- ── Top bar: brand + file info + download/tags/delete/close ── -->
       <div style="
-        background:#2874f0;
+        background:#AAFF20;
         display:flex;align-items:center;justify-content:space-between;
         padding:0 16px;height:52px;flex-shrink:0;gap:10px;">
         <!-- Brand + file info -->
         <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;">
           <div style="display:flex;flex-direction:column;line-height:1.1;flex-shrink:0;">
-            <span style="color:#fff;font-size:15px;font-weight:700;letter-spacing:-.3px;">MeraDogs</span>
-            <span style="color:#ffe500;font-size:9px;font-style:italic;">Media Viewer ✦</span>
+            <span style="color:#000;font-size:15px;font-weight:700;letter-spacing:-.3px;">MeraDogs</span>
+            <span style="color:#000;font-size:9px;font-style:italic;opacity:.6;">Media Viewer</span>
           </div>
-          <div style="width:1px;height:28px;background:rgba(255,255,255,.25);flex-shrink:0;"></div>
+          <div style="width:1px;height:28px;background:rgba(0,0,0,.25);flex-shrink:0;"></div>
           <div style="min-width:0;">
-            <div id="vw-filename" style="color:#fff;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;"></div>
-            <div id="vw-counter" style="color:#bbdefb;font-size:11px;margin-top:1px;"></div>
+            <div id="vw-filename" style="color:#000;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;"></div>
+            <div id="vw-counter" style="color:#000;font-size:11px;margin-top:1px;opacity:.6;"></div>
           </div>
         </div>
         <!-- Download / Tags / Delete / Close -->
@@ -92,10 +94,10 @@ export function openViewer(items, startIndex = 0, options = {}) {
           <div style="width:1px;height:28px;background:rgba(255,255,255,.22);margin:0 2px;"></div>
           <button data-action="close" title="Close (Esc)" style="
             width:40px;height:40px;display:flex;align-items:center;justify-content:center;
-            background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);
-            border-radius:2px;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
-            onmouseover="this.style.background='#e53935';this.style.borderColor='#e53935'"
-            onmouseout="this.style.background='rgba(255,255,255,.10)';this.style.borderColor='rgba(255,255,255,.22)'"
+            background:rgba(0,0,0,.15);border:1px solid rgba(0,0,0,.3);
+            border-radius:2px;cursor:pointer;color:#000;flex-shrink:0;transition:background .15s;"
+            onmouseover="this.style.background='#e53935';this.style.borderColor='#e53935';this.style.color='#fff'"
+            onmouseout="this.style.background='rgba(0,0,0,.15)';this.style.borderColor='rgba(0,0,0,.3)';this.style.color='#000'"
           >${SVG.close}</button>
         </div>
       </div>
@@ -108,7 +110,7 @@ export function openViewer(items, startIndex = 0, options = {}) {
 
       <!-- ── Bottom bar: tags row ── -->
       <div style="
-        background:#1a1a2e;border-top:1px solid rgba(255,255,255,.08);
+        background:#111;border-top:1px solid #222;
         padding:6px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;min-height:32px;">
         <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;">
           <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
@@ -119,7 +121,7 @@ export function openViewer(items, startIndex = 0, options = {}) {
 
       <!-- ── Bottom bar: prev/next + zoom + favorite ── -->
       <div style="
-        background:#1a1a2e;border-top:1px solid rgba(255,255,255,.06);
+        background:#111;border-top:1px solid #222;
         padding:10px 14px;display:flex;align-items:center;justify-content:center;
         gap:6px;flex-shrink:0;flex-wrap:wrap;">
 
@@ -137,10 +139,10 @@ export function openViewer(items, startIndex = 0, options = {}) {
 
         <button data-action="favorite" id="vw-fav-btn" title="Toggle favorite (F)" style="
           width:44px;height:44px;display:flex;align-items:center;justify-content:center;
-          background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+          background:#1a1a1a;border:1px solid #333;
           border-radius:2px;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
-          onmouseover="this.style.background='rgba(255,255,255,.22)'"
-          onmouseout="this.style.background='rgba(255,255,255,.10)'"
+          onmouseover="this.style.background='#1a1a1a'"
+          onmouseout="this.style.background='#1a1a1a'"
         >${SVG.fav}</button>
       </div>
     </div>
@@ -170,10 +172,10 @@ export function openViewer(items, startIndex = 0, options = {}) {
     if (tagsEl) {
       tagsEl.innerHTML = (item.tags || []).length
         ? item.tags.map((t) => `
-            <span style="background:rgba(40,116,240,.35);color:#bbdefb;font-size:11px;
-              padding:2px 8px;border-radius:2px;border:1px solid rgba(40,116,240,.5);">${t}</span>
+            <span style="background:#1a2e00;color:#AAFF20;font-size:11px;
+              padding:2px 8px;border-radius:2px;border:1px solid rgba(170,255,32,.3);">${t}</span>
           `).join("")
-        : `<span style="font-size:11px;color:rgba(255,255,255,.3);">No tags</span>`;
+        : `<span style="font-size:11px;color:#555;">No tags</span>`;
     }
 
     // media
