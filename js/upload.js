@@ -1,4 +1,4 @@
-﻿import { uid, isImageFile, isVideoFile, blobToDataURL } from "./helpers.js";
+﻿import { uid, isImageFile, isVideoFile } from "./helpers.js";
 import { put as putRow } from "./db.js";
 import { notify } from "./notifications.js";
 import { syncTagsFromMedia } from "./tags.js";
@@ -35,45 +35,6 @@ async function makeImageThumbnail(file) {
 async function makeThumbnail(file) {
   if (isImageFile(file)) {
     return makeImageThumbnail(file);
-  }
-  if (isVideoFile(file)) {
-    return new Promise((resolve) => {
-      const video = document.createElement("video");
-      const src = URL.createObjectURL(file);
-      video.preload = "metadata";
-      video.muted = true;
-      video.playsInline = true;
-      video.src = src;
-
-      const cleanup = () => URL.revokeObjectURL(src);
-
-      const capture = () => {
-        try {
-          const canvas = document.createElement("canvas");
-          canvas.width = 480;
-          canvas.height = Math.round(480 * (video.videoHeight / video.videoWidth)) || 270;
-          canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-          canvas.toBlob((blob) => { cleanup(); resolve(blob); }, "image/jpeg", 0.82);
-        } catch {
-          cleanup(); resolve(null);
-        }
-      };
-
-      video.addEventListener("seeked", capture, { once: true });
-      video.addEventListener("error", () => { cleanup(); resolve(null); }, { once: true });
-
-      video.addEventListener("loadedmetadata", () => {
-        video.currentTime = Math.min(1, video.duration * 0.1 || 0);
-      }, { once: true });
-
-      // fallback: if seeked never fires, try capturing after a short delay
-      video.addEventListener("loadeddata", () => {
-        setTimeout(() => {
-          if (video.readyState >= 2) capture();
-          else { cleanup(); resolve(null); }
-        }, 300);
-      }, { once: true });
-    });
   }
   return null;
 }
