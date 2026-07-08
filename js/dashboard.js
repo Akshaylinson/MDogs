@@ -204,18 +204,18 @@ export async function initDashboard() {
     app.innerHTML = `
       <div style="max-width:1280px;margin:0 auto;padding:24px 20px 40px;">
 
-        <!-- Stats row — 3-col grid on mobile, auto on desktop -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0 0 16px;border-bottom:1px solid #e0e0e0;margin-bottom:20px;">
+        <!-- Stats box: single card, 5 equal columns -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px;">
           ${[
-            ["Categories", cards.length, "#212121"],
-            ["Images",     totalImages,  "#212121"],
-            ["Videos",     totalVideos,  "#212121"],
-            ["Favorites",  favoriteCount,"#e53935"],
-            ["Storage",    formatBytes(storageBytes), "#212121"],
-          ].map(([label, val, color]) => `
-            <div style="padding:14px 10px;">
-              <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}</div>
-              <div style="font-size:22px;font-weight:700;color:${color};margin-top:2px;line-height:1.1;">${val}</div>
+            ["Categories", cards.length,              "#2874f0"],
+            ["Images",     totalImages,               "#212121"],
+            ["Videos",     totalVideos,               "#212121"],
+            ["Favorites",  favoriteCount,             "#e53935"],
+            ["Storage",    formatBytes(storageBytes), "#388e3c"],
+          ].map(([label, val, color], i, arr) => `
+            <div style="padding:14px 10px;text-align:center;${i < arr.length - 1 ? "border-right:1px solid #f0f0f0;" : ""}">
+              <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}</div>
+              <div style="font-size:22px;font-weight:700;color:${color};margin-top:4px;line-height:1;">${val}</div>
             </div>
           `).join("")}
         </div>
