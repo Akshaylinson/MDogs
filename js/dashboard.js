@@ -18,7 +18,7 @@ function cardStats(categories, media) {
 const GRID_ICON = `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
 const LIST_ICON = `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`;
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ Modal Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+//  Modal 
 
 function openAddCategoryModal(onCreated) {
   const modalRoot = document.getElementById("modal-root");
@@ -145,7 +145,7 @@ function openAddCategoryModal(onCreated) {
     }
     const submitBtn = document.getElementById("cat-submit");
     submitBtn.disabled = true;
-    submitBtn.textContent = "CreatingÃ¢â‚¬Â¦";
+    submitBtn.textContent = "Creating...";
     const thumbnailBlob = selectedFile || null;
     const newCategory = await createCategory(name, thumbnailBlob);
     close();
@@ -158,7 +158,7 @@ function openAddCategoryModal(onCreated) {
   });
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ Dashboard Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+//  Dashboard 
 
 export async function initDashboard() {
   const app = document.getElementById("app");
@@ -234,15 +234,15 @@ export async function initDashboard() {
             <span style="padding:0 10px;color:#666;display:flex;align-items:center;flex-shrink:0;">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             </span>
-            <input id="catSearch" value="${escapeHtml(state.search)}" type="text" placeholder="SearchÃ¢â‚¬Â¦"
+            <input id="catSearch" value="${escapeHtml(state.search)}" type="text" placeholder="Search..."
               style="border:none;outline:none;font-size:13px;color:#fff;background:transparent;width:100%;padding-right:8px;" />
           </div>
           <!-- Sort -->
           <select id="catSort" style="height:38px;border:1px solid #333;border-radius:2px;font-size:13px;padding:0 8px;background:#111;color:#fff;outline:none;cursor:pointer;flex-shrink:0;">
             <option value="newest" ${state.sort === "newest" ? "selected" : ""}>Newest</option>
             <option value="oldest" ${state.sort === "oldest" ? "selected" : ""}>Oldest</option>
-            <option value="az" ${state.sort === "az" ? "selected" : ""}>AÃ¢â‚¬â€œZ</option>
-            <option value="za" ${state.sort === "za" ? "selected" : ""}>ZÃ¢â‚¬â€œA</option>
+            <option value="az" ${state.sort === "az" ? "selected" : ""}>A-Z</option>
+            <option value="za" ${state.sort === "za" ? "selected" : ""}>Z-A</option>
           </select>
           <!-- View toggle -->
           <button id="toggleView" title="Toggle view"
@@ -291,7 +291,7 @@ export async function initDashboard() {
                 <!-- Info -->
                 <div style="flex:1;min-width:0;">
                   <a href="./category.html?id=${cat.id}" style="font-size:14px;font-weight:600;color:#fff;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat.name)}</a>
-                  <div style="font-size:11px;color:#aaa;margin-top:2px;">${cat.imageCount} img Ã‚Â· ${cat.videoCount} vid Ã‚Â· ${cat.favoriteCount} fav</div>
+                  <div style="font-size:11px;color:#aaa;margin-top:2px;">${cat.imageCount} img &middot; ${cat.videoCount} vid &middot; ${cat.favoriteCount} fav</div>
                   <div style="font-size:10px;color:#666;margin-top:1px;">${formatShortDate(cat.createdAt)}</div>
                 </div>
                 <!-- Actions -->

@@ -103,7 +103,7 @@ export async function initSettingsPage() {
             <hr class="fk-divider" />
             <div style="background:#0d1a00;border-radius:3px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
               <svg width="16" height="16" fill="none" stroke="#AAFF20" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <p style="font-size:12px;color:#AAFF20;line-height:1.5;">Use <strong>Space</strong> to pause, <strong>Ã¢â€ Â Ã¢â€ â€™</strong> to navigate, and <strong>Esc</strong> to close the slideshow.</p>
+              <p style="font-size:12px;color:#AAFF20;line-height:1.5;">Use <strong>Space</strong> to pause, <strong>Left/Right</strong> to navigate, and <strong>Esc</strong> to close the slideshow.</p>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@ export async function initSettingsPage() {
             <span style="color:#000;font-size:14px;font-weight:700;">Backup &amp; Restore</span>
           </div>
           <div style="padding:18px;display:flex;flex-direction:column;gap:12px;">
-            <p style="font-size:13px;color:#aaa;line-height:1.6;">Export your categories, tags, and settings as a JSON file. Media blobs are not included Ã¢â‚¬â€ only metadata.</p>
+            <p style="font-size:13px;color:#aaa;line-height:1.6;">Export your categories, tags, and settings as a JSON file. Media blobs are not included - only metadata.</p>
             <button id="export" class="fk-btn fk-btn-primary" style="width:100%;justify-content:center;">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Export JSON
@@ -152,7 +152,7 @@ export async function initSettingsPage() {
     </div>
   `;
 
-  // Ã¢â€â‚¬Ã¢â€â‚¬ Event handlers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  //  Event handlers 
   app.addEventListener("change", async (e) => {
     const { id, value } = e.target;
     if (id === "theme") { await setTheme(value); notify("Theme updated"); return; }
@@ -173,7 +173,7 @@ export async function initSettingsPage() {
         notify("Import complete");
         location.reload();
       } catch {
-        notify("Import failed Ã¢â‚¬â€ invalid JSON");
+        notify("Import failed - invalid JSON");
       }
     }
   });
@@ -211,7 +211,7 @@ export async function initSettingsPage() {
       a.download = "meradogs-backup.json";
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-      notify("Export ready Ã¢â‚¬â€ check your downloads");
+      notify("Export ready - check your downloads");
       return;
     }
 
