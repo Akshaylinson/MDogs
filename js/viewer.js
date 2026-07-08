@@ -163,8 +163,8 @@ export function openViewer(items, startIndex = 0, options = {}) {
     const favBtn = document.getElementById("vw-fav-btn");
     if (favBtn) {
       favBtn.innerHTML = item.isFavorite ? SVG.favFill : SVG.fav;
-      favBtn.style.background = item.isFavorite ? "rgba(229,57,53,.25)" : "rgba(255,255,255,.10)";
-      favBtn.style.borderColor = item.isFavorite ? "#e53935" : "rgba(255,255,255,.18)";
+      favBtn.style.background = item.isFavorite ? "rgba(229,57,53,.25)" : "#1a1a1a";
+      favBtn.style.borderColor = item.isFavorite ? "#e53935" : "#333";
     }
 
     // tags

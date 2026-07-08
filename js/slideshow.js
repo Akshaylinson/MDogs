@@ -14,11 +14,11 @@ const SVG = {
 function btn(action, svg, title, danger = false) {
   return `<button data-action="${action}" title="${title}" style="
     width:42px;height:42px;display:flex;align-items:center;justify-content:center;
-    background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+    background:#1a1a1a;border:1px solid #333;
     border-radius:50%;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;
     ${danger ? "border-color:rgba(229,57,53,.6);" : ""}"
-    onmouseover="this.style.background='${danger ? "#e53935" : "rgba(255,255,255,.3)"}'"
-    onmouseout="this.style.background='rgba(255,255,255,.15)'"
+    onmouseover="this.style.background='${danger ? "#e53935" : "#AAFF20"}';this.style.borderColor='${danger ? "#e53935" : "#AAFF20"}';this.style.color='${danger ? "#fff" : "#000"}'"
+    onmouseout="this.style.background='#1a1a1a';this.style.borderColor='${danger ? "rgba(229,57,53,.6)" : "#333"}';this.style.color='#fff'"
   >${svg}</button>`;
 }
 
@@ -49,7 +49,7 @@ export function openSlideshow(items, intervalSeconds = 5) {
 
     <!-- Progress bar: always visible at top -->
     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1);z-index:2;">
-      <div id="ss-progress" style="height:100%;background:#ffe500;width:0%;"></div>
+      <div id="ss-progress" style="height:100%;background:#AAFF20;width:0%;"></div>
     </div>
 
     <!-- Overlay UI: hidden by default, shown on tap -->
@@ -72,10 +72,10 @@ export function openSlideshow(items, intervalSeconds = 5) {
           <div style="width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0;"></div>
           <button data-action="favorite" id="ss-fav-btn" title="Favorite" style="
             width:42px;height:42px;display:flex;align-items:center;justify-content:center;
-            background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+            background:#1a1a1a;border:1px solid #333;
             border-radius:50%;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
-            onmouseover="this.style.background='rgba(255,255,255,.3)'"
-            onmouseout="this.style.background='rgba(255,255,255,.15)'"
+            onmouseover="this.style.background='#AAFF20';this.style.borderColor='#AAFF20';this.style.color='#000'"
+            onmouseout="this.style.background='#1a1a1a';this.style.borderColor='#333';this.style.color='#fff'"
           >${SVG.fav}</button>
           ${btn("download", SVG.download, "Download")}
           ${btn("close",    SVG.close,    "Close", true)}
@@ -126,15 +126,15 @@ export function openSlideshow(items, intervalSeconds = 5) {
     // tags
     const tagsEl = $("ss-tags");
     tagsEl.innerHTML = (item.tags || []).length
-      ? item.tags.map((t) => `<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);">${t}</span>`).join("")
+      ? item.tags.map((t) => `<span style="background:#1a2e00;color:#AAFF20;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid rgba(170,255,32,.3);">${t}</span>`).join("")
       : `<span style="font-size:11px;color:rgba(255,255,255,.3);">No tags</span>`;
 
     // favorite button
     const favBtn = $("ss-fav-btn");
     if (favBtn) {
       favBtn.innerHTML = item.isFavorite ? SVG.favFill : SVG.fav;
-      favBtn.style.borderColor = item.isFavorite ? "#e53935" : "rgba(255,255,255,.25)";
-      favBtn.style.background = item.isFavorite ? "rgba(229,57,53,.2)" : "rgba(255,255,255,.15)";
+      favBtn.style.borderColor = item.isFavorite ? "#e53935" : "#333";
+      favBtn.style.background = item.isFavorite ? "rgba(229,57,53,.2)" : "#1a1a1a";
     }
 
     // toggle button icon
