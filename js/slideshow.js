@@ -13,7 +13,7 @@ const SVG = {
 
 function btn(action, svg, title, danger = false) {
   return `<button data-action="${action}" title="${title}" style="
-    width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+    width:42px;height:42px;display:flex;align-items:center;justify-content:center;
     background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
     border-radius:50%;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;
     ${danger ? "border-color:rgba(229,57,53,.6);" : ""}"
@@ -65,13 +65,13 @@ export function openSlideshow(items, intervalSeconds = 5) {
         <div id="ss-counter" style="text-align:center;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;letter-spacing:.05em;margin-bottom:14px;pointer-events:none;"></div>
 
         <!-- Buttons row -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:14px;pointer-events:auto;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;pointer-events:auto;flex-wrap:wrap;">
           ${btn("prev",     SVG.prev,     "Previous")}
           ${btn("toggle",   SVG.pause,    "Play / Pause")}
           ${btn("next",     SVG.next,     "Next")}
-          <div style="width:1px;height:32px;background:rgba(255,255,255,.2);"></div>
+          <div style="width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0;"></div>
           <button data-action="favorite" id="ss-fav-btn" title="Favorite" style="
-            width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+            width:42px;height:42px;display:flex;align-items:center;justify-content:center;
             background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
             border-radius:50%;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
             onmouseover="this.style.background='rgba(255,255,255,.3)'"
@@ -144,7 +144,7 @@ export function openSlideshow(items, intervalSeconds = 5) {
     // media
     const stage = $("ss-stage");
     if (item.mediaType === "video" && currentUrl) {
-      stage.innerHTML = `<video id="ss-video" src="${currentUrl}" style="width:100%;height:100%;object-fit:contain;" autoplay playsinline></video>`;
+      stage.innerHTML = `<video id="ss-video" src="${currentUrl}" style="width:100%;height:100%;object-fit:contain;pointer-events:none;" autoplay playsinline></video>`;
       const videoEl = document.getElementById("ss-video");
       // progress bar tracks actual video playback
       videoEl.addEventListener("timeupdate", () => {
@@ -267,11 +267,9 @@ export function openSlideshow(items, intervalSeconds = 5) {
   backdrop.addEventListener("click", async (e) => {
     const btn = e.target.closest("button[data-action]");
 
-    // tapped empty area (not a button, not a video)
     if (!btn) {
-      if (e.target.closest("video")) return;
+      // tap on stage (image or video) — toggle UI and pause
       if (!uiVisible) {
-        // first tap: pause + show UI
         if (playing) togglePlay();
         showUI();
       } else {

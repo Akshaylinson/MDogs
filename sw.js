@@ -1,4 +1,4 @@
-const CACHE = "meradogs-v8";
+const CACHE = "meradogs-v9";
 const SHELL = [
   "./index.html",
   "./category.html",
