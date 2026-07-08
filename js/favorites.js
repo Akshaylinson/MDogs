@@ -2,7 +2,7 @@ import { getAll, put as putRow, del as delRow } from "./db.js";
 import { openViewer } from "./viewer.js";
 import { openSlideshow } from "./slideshow.js";
 import { getSetting } from "./db.js";
-import { escapeHtml, formatShortDate, downloadBlob } from "./helpers.js";
+import { escapeHtml, formatShortDate } from "./helpers.js";
 import { notify } from "./notifications.js";
 
 function mediaUrl(item) {
@@ -118,45 +118,46 @@ export async function initFavoritesPage() {
       const isVideo = item.mediaType === "video";
       const catName = catMap[item.categoryId] || "Unknown";
       return `
-        <div class="fk-media-card" data-id="${item.id}">
+        <div class="fk-media-card" data-action="open" data-id="${item.id}" style="cursor:pointer;">
           <div class="fk-media-thumb-wrap">
-            ${url
-              ? (isVideo
-                  ? `<video src="${url}" class="fk-media-thumb" muted playsinline preload="metadata"></video>`
-                  : `<img src="${url}" class="fk-media-thumb" alt="${escapeHtml(item.fileName)}" loading="lazy" />`)
-              : `<div class="fk-media-thumb" style="display:flex;align-items:center;justify-content:center;">
-                   <svg width="32" height="32" fill="none" stroke="#f48fb1" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                 </div>`}
-            <div class="fk-media-overlay">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-                <span class="fk-chip">${isVideo ? "▶ Video" : "🖼 Image"}</span>
-                <button data-action="unfav" data-id="${item.id}" class="fk-chip fk-chip-fav" title="Remove from favorites">♥</button>
+            ${isVideo
+              ? `<video class="fk-media-thumb" muted playsinline preload="metadata" data-video-id="${item.id}" style="pointer-events:none;background:#000;"></video>`
+              : `<img src="${url}" class="fk-media-thumb" alt="" loading="lazy" />`}
+            ${isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+              <div style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.85);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" style="margin-left:3px;"><polygon points="6 3 20 12 6 21 6 3"/></svg>
               </div>
-              <div style="display:flex;justify-content:space-between;align-items:flex-end;">
-                <p style="font-size:11px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%;">${escapeHtml(item.fileName)}</p>
-                <button data-action="open" data-id="${item.id}" class="fk-chip">Preview</button>
+            </div>` : ""}
+            <div class="fk-media-overlay">
+              <div style="display:flex;justify-content:flex-end;align-items:flex-start;"></div>
+              <div style="display:flex;justify-content:center;align-items:flex-end;padding-bottom:6px;">
+                <button data-action="unfav" data-id="${item.id}" title="Remove from favorites" style="
+                  background:none;border:none;cursor:pointer;padding:4px;line-height:1;
+                  filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));transition:transform .15s;"
+                  onmouseover="this.style.transform='scale(1.2)'"
+                  onmouseout="this.style.transform='scale(1)'">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="#e53935" stroke="#e53935" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
-          <div style="padding:8px 10px;">
-            <p style="font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.fileName)}</p>
-            <a href="./category.html?id=${item.categoryId}" style="font-size:11px;color:#AAFF20;text-decoration:none;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(catName)}</a>
-            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">
-              ${(item.tags || []).slice(0, 3).map((t) => `<span style="background:#1a2e00;color:#AAFF20;font-size:10px;padding:2px 6px;border-radius:2px;">${escapeHtml(t)}</span>`).join("")}
-            </div>
-            <div style="display:flex;gap:5px;margin-top:8px;">
-              <button data-action="open" data-id="${item.id}" style="flex:1;height:28px;background:#AAFF20;color:#000;border:none;font-size:11px;border-radius:2px;cursor:pointer;font-weight:600;">Open</button>
-              <button data-action="download" data-id="${item.id}" style="height:28px;padding:0 8px;background:#1a1a1a;border:1px solid #333;color:#aaa;font-size:11px;border-radius:2px;cursor:pointer;" title="Download">
-                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              </button>
-              <button data-action="unfav" data-id="${item.id}" style="height:28px;padding:0 8px;background:#1a1a1a;border:1px solid #333;color:#e53935;font-size:11px;border-radius:2px;cursor:pointer;" title="Remove favorite">
-                <svg width="13" height="13" fill="#e53935" stroke="#e53935" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              </button>
-            </div>
+          <div style="padding:6px 10px 8px;">
+            <a href="./category.html?id=${item.categoryId}" data-action="cat" style="font-size:11px;color:#AAFF20;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(catName)}</a>
           </div>
         </div>
       `;
     }).join("");
+
+    // set video src after DOM insertion
+    grid.querySelectorAll("video[data-video-id]").forEach((videoEl) => {
+      const item = filtered.find((m) => m.id === videoEl.dataset.videoId);
+      if (!item?.blobData) return;
+      const u = urlCache.get(item.id) || URL.createObjectURL(item.blobData);
+      urlCache.set(item.id, u);
+      videoEl.src = u;
+    });
   }
 
   // ── Filter helpers ────────────────────────────────────────────────────────
@@ -210,33 +211,35 @@ export async function initFavoritesPage() {
 
   // ── Delegated card clicks ─────────────────────────────────────────────────
   app.addEventListener("click", async (e) => {
-    const btn = e.target.closest("button[data-action]");
-    if (!btn) return;
-    const item = filtered.find((m) => m.id === btn.dataset.id);
-    if (!item) return;
-    const action = btn.dataset.action;
+    // category link — let it navigate normally
+    if (e.target.closest("a[data-action='cat']")) return;
 
-    if (action === "open") {
+    const btn = e.target.closest("button[data-action]");
+    if (btn) {
+      const item = filtered.find((m) => m.id === btn.dataset.id);
+      if (!item) return;
+      if (btn.dataset.action === "unfav") {
+        e.stopPropagation();
+        item.isFavorite = false;
+        item.updatedAt = new Date().toISOString();
+        await putRow("media", item);
+        notify("Removed from favorites");
+        favorites = favorites.filter((m) => m.id !== item.id);
+        filtered = filtered.filter((m) => m.id !== item.id);
+        renderGrid();
+      }
+      return;
+    }
+
+    // click on card itself — open viewer
+    const card = e.target.closest(".fk-media-card[data-action='open']");
+    if (card) {
+      const item = filtered.find((m) => m.id === card.dataset.id);
+      if (!item) return;
       openViewer(filtered, filtered.findIndex((m) => m.id === item.id), {
         onChange: initFavoritesPage,
         onDelete: initFavoritesPage,
       });
-      return;
-    }
-
-    if (action === "unfav") {
-      item.isFavorite = false;
-      item.updatedAt = new Date().toISOString();
-      await putRow("media", item);
-      notify("Removed from favorites");
-      favorites = favorites.filter((m) => m.id !== item.id);
-      filtered = filtered.filter((m) => m.id !== item.id);
-      renderGrid();
-      return;
-    }
-
-    if (action === "download") {
-      downloadBlob(item.blobData, item.fileName);
     }
   });
 
