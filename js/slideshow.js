@@ -143,11 +143,26 @@ export function openSlideshow(items, intervalSeconds = 5) {
 
     // media
     const stage = $("ss-stage");
-    stage.innerHTML = currentUrl
-      ? (item.mediaType === "video"
-          ? `<video src="${currentUrl}" style="width:100%;height:100%;object-fit:contain;" controls autoplay playsinline></video>`
-          : `<img src="${currentUrl}" alt="${item.fileName}" style="width:100%;height:100%;object-fit:contain;user-select:none;" draggable="false" />`)
-      : `<div style="color:rgba(255,255,255,.3);font-size:14px;">No preview</div>`;
+    if (item.mediaType === "video" && currentUrl) {
+      stage.innerHTML = `<video id="ss-video" src="${currentUrl}" style="width:100%;height:100%;object-fit:contain;" autoplay playsinline></video>`;
+      const videoEl = document.getElementById("ss-video");
+      // progress bar tracks actual video playback
+      videoEl.addEventListener("timeupdate", () => {
+        if (!playing || !videoEl.duration) return;
+        const bar = $("ss-progress");
+        if (bar) bar.style.width = ((videoEl.currentTime / videoEl.duration) * 100) + "%";
+      });
+      // advance to next slide when video finishes
+      videoEl.addEventListener("ended", () => {
+        if (!playing) return;
+        index = (index + 1) % items.length;
+        renderMedia();
+      }, { once: true });
+    } else {
+      stage.innerHTML = currentUrl
+        ? `<img src="${currentUrl}" alt="${item.fileName}" style="width:100%;height:100%;object-fit:contain;user-select:none;" draggable="false" />`
+        : `<div style="color:rgba(255,255,255,.3);font-size:14px;">No preview</div>`;
+    }
   }
 
   // ── progress bar ──────────────────────────────────────────────────────────
@@ -179,18 +194,28 @@ export function openSlideshow(items, intervalSeconds = 5) {
   function startTimer() {
     stopTimer();
     if (!playing) return;
+    const item = items[index];
+    if (item.mediaType === "video") {
+      // video self-advances via the 'ended' listener in renderMedia
+      // just animate progress via timeupdate — no interval needed
+      return;
+    }
     startProgress();
     timer = setInterval(() => {
       index = (index + 1) % items.length;
       renderMedia();
-      startProgress();
+      startTimer();
     }, intervalSeconds * 1000);
   }
 
   function goTo(i) {
+    stopTimer();
+    stopProgress();
+    const videoEl = document.getElementById("ss-video");
+    if (videoEl) videoEl.pause();
     index = (i + items.length) % items.length;
     renderMedia();
-    startTimer();
+    if (playing) startTimer();
     showUI();
   }
 
@@ -198,13 +223,16 @@ export function openSlideshow(items, intervalSeconds = 5) {
     playing = !playing;
     const toggleBtn = backdrop.querySelector('[data-action="toggle"]');
     if (toggleBtn) toggleBtn.innerHTML = playing ? SVG.pause : SVG.play;
+    const videoEl = document.getElementById("ss-video");
     if (playing) {
+      if (videoEl) videoEl.play();
       startTimer();
       hideTimer = setTimeout(hideUI, 3000);
     } else {
+      if (videoEl) videoEl.pause();
       stopTimer();
       stopProgress();
-      clearTimeout(hideTimer); // keep UI visible while paused
+      clearTimeout(hideTimer);
     }
   }
 
