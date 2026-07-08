@@ -18,7 +18,7 @@ function cardStats(categories, media) {
 const GRID_ICON = `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
 const LIST_ICON = `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`;
 
-// ── Modal ────────────────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬ Modal Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 function openAddCategoryModal(onCreated) {
   const modalRoot = document.getElementById("modal-root");
@@ -27,68 +27,68 @@ function openAddCategoryModal(onCreated) {
 
   modalRoot.innerHTML = `
     <div id="cat-backdrop" style="
-      position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;
+      position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;
       display:flex;align-items:center;justify-content:center;padding:16px;">
       <div style="
-        background:#fff;border-radius:4px;width:100%;max-width:460px;
-        box-shadow:0 8px 40px rgba(0,0,0,.22);overflow:hidden;">
+        background:#111;border-radius:4px;width:100%;max-width:460px;
+        box-shadow:0 8px 40px rgba(0,0,0,.6);overflow:hidden;">
 
         <!-- Modal header -->
-        <div style="background:#2874f0;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
-          <span style="color:#fff;font-size:16px;font-weight:700;">Add New Category</span>
-          <button id="cat-close" style="background:none;border:none;cursor:pointer;color:#fff;line-height:1;">
+        <div style="background:#AAFF20;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+          <span style="color:#000;font-size:16px;font-weight:700;">Add New Category</span>
+          <button id="cat-close" style="background:none;border:none;cursor:pointer;color:#000;line-height:1;">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
 
         <!-- Modal body -->
-        <div style="padding:24px 20px;display:flex;flex-direction:column;gap:20px;">
+        <div style="padding:24px 20px;display:flex;flex-direction:column;gap:20px;background:#111;">
 
           <!-- Category name -->
           <div>
-            <label style="font-size:13px;font-weight:600;color:#212121;display:block;margin-bottom:6px;">
+            <label style="font-size:13px;font-weight:600;color:#fff;display:block;margin-bottom:6px;">
               Category Name <span style="color:#e53935;">*</span>
             </label>
             <input id="cat-name" type="text" placeholder="e.g. Golden Retrievers"
-              style="width:100%;height:40px;border:1px solid #d0d0d0;border-radius:2px;padding:0 12px;font-size:14px;color:#212121;outline:none;box-sizing:border-box;"
-              onfocus="this.style.borderColor='#2874f0'" onblur="this.style.borderColor='#d0d0d0'" />
+              style="width:100%;height:40px;border:1px solid #333;border-radius:2px;padding:0 12px;font-size:14px;color:#fff;background:#1a1a1a;outline:none;box-sizing:border-box;"
+              onfocus="this.style.borderColor='#AAFF20'" onblur="this.style.borderColor='#333'" />
           </div>
 
           <!-- Thumbnail upload -->
           <div>
-            <label style="font-size:13px;font-weight:600;color:#212121;display:block;margin-bottom:6px;">
-              Thumbnail Image <span style="font-weight:400;color:#888;">(optional)</span>
+            <label style="font-size:13px;font-weight:600;color:#fff;display:block;margin-bottom:6px;">
+              Thumbnail Image <span style="font-weight:400;color:#aaa;">(optional)</span>
             </label>
 
             <div id="cat-dropzone" style="
-              border:2px dashed #d0d0d0;border-radius:4px;padding:20px;text-align:center;
-              cursor:pointer;transition:border-color .2s;position:relative;background:#fafafa;">
+              border:2px dashed #333;border-radius:4px;padding:20px;text-align:center;
+              cursor:pointer;transition:border-color .2s;position:relative;background:#1a1a1a;">
               <input id="cat-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"
                 style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" />
 
               <div id="cat-preview-wrap">
-                <svg width="36" height="36" fill="none" stroke="#bbb" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 8px;">
+                <svg width="36" height="36" fill="none" stroke="#888" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 8px;">
                   <rect x="3" y="3" width="18" height="18" rx="2"/>
                   <circle cx="8.5" cy="8.5" r="1.5"/>
                   <polyline points="21 15 16 10 5 21"/>
                 </svg>
-                <p style="font-size:13px;color:#888;">Click or drag an image here</p>
-                <p style="font-size:11px;color:#bbb;margin-top:4px;">JPG, PNG, WEBP, GIF</p>
+                <p style="font-size:13px;color:#aaa;">Click or drag an image here</p>
+                <p style="font-size:11px;color:#777;margin-top:4px;">JPG, PNG, WEBP, GIF</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Modal footer -->
-        <div style="padding:0 20px 20px;display:flex;gap:10px;justify-content:flex-end;">
+        <div style="padding:0 20px 20px;display:flex;gap:10px;justify-content:flex-end;background:#111;">
           <button id="cat-cancel" style="
-            height:40px;padding:0 20px;border:1px solid #d0d0d0;border-radius:2px;
-            background:#fff;color:#555;font-size:14px;font-weight:500;cursor:pointer;">
+            height:40px;padding:0 20px;border:1px solid #333;border-radius:2px;
+            background:#1a1a1a;color:#ccc;font-size:14px;font-weight:500;cursor:pointer;">
             Cancel
           </button>
           <button id="cat-submit" style="
             height:40px;padding:0 24px;border:none;border-radius:2px;
-            background:#2874f0;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">
+            background:#AAFF20;color:#000;font-size:14px;font-weight:700;cursor:pointer;">
             Create Category
           </button>
         </div>
@@ -109,16 +109,16 @@ function openAddCategoryModal(onCreated) {
     previewUrl = URL.createObjectURL(file);
     previewWrap.innerHTML = `
       <img src="${previewUrl}" style="width:100%;height:120px;object-fit:cover;border-radius:3px;" />
-      <p style="font-size:11px;color:#888;margin-top:6px;">${escapeHtml(file.name)}</p>
+      <p style="font-size:11px;color:#aaa;margin-top:6px;">${escapeHtml(file.name)}</p>
     `;
-    dropzone.style.borderColor = "#2874f0";
+    dropzone.style.borderColor = "#AAFF20";
     dropzone.style.padding = "10px";
   }
 
   fileInput.addEventListener("change", () => { if (fileInput.files[0]) showPreview(fileInput.files[0]); });
 
-  dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.style.borderColor = "#2874f0"; });
-  dropzone.addEventListener("dragleave", () => { dropzone.style.borderColor = "#d0d0d0"; });
+  dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.style.borderColor = "#AAFF20"; });
+  dropzone.addEventListener("dragleave", () => { dropzone.style.borderColor = "#333"; });
   dropzone.addEventListener("drop", (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -145,7 +145,7 @@ function openAddCategoryModal(onCreated) {
     }
     const submitBtn = document.getElementById("cat-submit");
     submitBtn.disabled = true;
-    submitBtn.textContent = "Creating…";
+    submitBtn.textContent = "CreatingÃ¢â‚¬Â¦";
     const thumbnailBlob = selectedFile || null;
     const newCategory = await createCategory(name, thumbnailBlob);
     close();
@@ -158,7 +158,7 @@ function openAddCategoryModal(onCreated) {
   });
 }
 
-// ── Dashboard ────────────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬ Dashboard Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 export async function initDashboard() {
   const app = document.getElementById("app");
@@ -205,53 +205,53 @@ export async function initDashboard() {
       <div style="max-width:1280px;margin:0 auto;padding:24px 20px 40px;">
 
         <!-- Stats box: single card, 3 equal columns -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px;">
-          <div style="padding:14px 10px;text-align:center;border-right:1px solid #f0f0f0;">
-            <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Categories</div>
-            <div style="font-size:22px;font-weight:700;color:#2874f0;margin-top:4px;line-height:1;">${cards.length}</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);background:#111;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.4);overflow:hidden;margin-bottom:20px;">
+          <div style="padding:14px 10px;text-align:center;border-right:1px solid #222;">
+            <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Categories</div>
+            <div style="font-size:22px;font-weight:700;color:#AAFF20;margin-top:4px;line-height:1;">${cards.length}</div>
           </div>
-          <div style="padding:14px 10px;text-align:center;border-right:1px solid #f0f0f0;">
-            <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Media</div>
-            <div style="font-size:22px;font-weight:700;color:#212121;margin-top:4px;line-height:1;">${totalImages + totalVideos}</div>
+          <div style="padding:14px 10px;text-align:center;border-right:1px solid #222;">
+            <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Media</div>
+            <div style="font-size:22px;font-weight:700;color:#fff;margin-top:4px;line-height:1;">${totalImages + totalVideos}</div>
             <div style="font-size:10px;color:#aaa;margin-top:3px;">${totalImages} img &middot; ${totalVideos} vid</div>
           </div>
           <div style="padding:14px 10px;text-align:center;">
-            <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Storage</div>
-            <div style="font-size:22px;font-weight:700;color:#388e3c;margin-top:4px;line-height:1;">${formatBytes(storageBytes)}</div>
+            <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Storage</div>
+            <div style="font-size:22px;font-weight:700;color:#AAFF20;margin-top:4px;line-height:1;">${formatBytes(storageBytes)}</div>
           </div>
         </div>
 
         <!-- Category Library header -->
         <div style="margin-bottom:12px;">
-          <div style="font-size:18px;font-weight:700;color:#212121;">Category Library</div>
-          <div style="font-size:12px;color:#888;margin-top:2px;">Create, search, and manage your media collections</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;">Category Library</div>
+          <div style="font-size:12px;color:#aaa;margin-top:2px;">Create, search, and manage your media collections</div>
         </div>
 
         <!-- Toolbar: full-width on mobile -->
         <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
           <!-- Search stretches to fill available space -->
-          <div style="flex:1;min-width:120px;display:flex;align-items:center;background:#fff;border:1px solid #d0d0d0;border-radius:2px;overflow:hidden;height:38px;">
-            <span style="padding:0 10px;color:#aaa;display:flex;align-items:center;flex-shrink:0;">
+          <div style="flex:1;min-width:120px;display:flex;align-items:center;background:#111;border:1px solid #333;border-radius:2px;overflow:hidden;height:38px;">
+            <span style="padding:0 10px;color:#666;display:flex;align-items:center;flex-shrink:0;">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             </span>
-            <input id="catSearch" value="${escapeHtml(state.search)}" type="text" placeholder="Search…"
-              style="border:none;outline:none;font-size:13px;color:#333;background:transparent;width:100%;padding-right:8px;" />
+            <input id="catSearch" value="${escapeHtml(state.search)}" type="text" placeholder="SearchÃ¢â‚¬Â¦"
+              style="border:none;outline:none;font-size:13px;color:#fff;background:transparent;width:100%;padding-right:8px;" />
           </div>
           <!-- Sort -->
-          <select id="catSort" style="height:38px;border:1px solid #d0d0d0;border-radius:2px;font-size:13px;padding:0 8px;background:#fff;color:#333;outline:none;cursor:pointer;flex-shrink:0;">
+          <select id="catSort" style="height:38px;border:1px solid #333;border-radius:2px;font-size:13px;padding:0 8px;background:#111;color:#fff;outline:none;cursor:pointer;flex-shrink:0;">
             <option value="newest" ${state.sort === "newest" ? "selected" : ""}>Newest</option>
             <option value="oldest" ${state.sort === "oldest" ? "selected" : ""}>Oldest</option>
-            <option value="az" ${state.sort === "az" ? "selected" : ""}>A–Z</option>
-            <option value="za" ${state.sort === "za" ? "selected" : ""}>Z–A</option>
+            <option value="az" ${state.sort === "az" ? "selected" : ""}>AÃ¢â‚¬â€œZ</option>
+            <option value="za" ${state.sort === "za" ? "selected" : ""}>ZÃ¢â‚¬â€œA</option>
           </select>
           <!-- View toggle -->
           <button id="toggleView" title="Toggle view"
-            style="height:38px;width:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid #d0d0d0;border-radius:2px;background:#fff;cursor:pointer;color:#555;">
+            style="height:38px;width:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid #333;border-radius:2px;background:#111;cursor:pointer;color:#ccc;">
             ${state.view === "grid" ? LIST_ICON : GRID_ICON}
           </button>
           <!-- Add -->
           <button id="addCategory"
-            style="height:38px;padding:0 14px;background:#2874f0;color:#fff;border:none;border-radius:2px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;">
+            style="height:38px;padding:0 14px;background:#AAFF20;color:#000;border:none;border-radius:2px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;">
             + Add
           </button>
         </div>
@@ -261,38 +261,38 @@ export async function initDashboard() {
           ? "display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;"
           : "display:flex;flex-direction:column;gap:10px;"}">
           ${filtered.length ? filtered.map((cat) => state.view === "grid" ? `
-            <div style="background:#fff;border-radius:4px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);">
+            <div style="background:#111;border-radius:4px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.4);">
               <a href="./category.html?id=${cat.id}" style="display:block;position:relative;">
-                <div style="width:100%;aspect-ratio:1/1;overflow:hidden;background:linear-gradient(135deg,#e3f2fd,#bbdefb);display:flex;align-items:center;justify-content:center;">
+                <div style="width:100%;aspect-ratio:1/1;overflow:hidden;background:linear-gradient(135deg,#0d1a00,#1a3300);display:flex;align-items:center;justify-content:center;">
                   ${coverUrls.has(cat.id)
                     ? `<img src="${coverUrls.get(cat.id)}" alt="${escapeHtml(cat.name)}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />`
-                    : `<svg width="36" height="36" fill="none" stroke="#90caf9" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
+                    : `<svg width="36" height="36" fill="none" stroke="#AAFF20" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
                 </div>
-                ${cat.favoriteCount > 0 ? `<span style="position:absolute;top:6px;left:6px;background:#388e3c;color:#fff;font-size:10px;padding:2px 6px;border-radius:2px;">${cat.favoriteCount} fav</span>` : ""}
+                ${cat.favoriteCount > 0 ? `<span style="position:absolute;top:6px;left:6px;background:#AAFF20;color:#000;font-size:10px;padding:2px 6px;border-radius:2px;">${cat.favoriteCount} fav</span>` : ""}
               </a>
               <div style="padding:10px;">
-                <a href="./category.html?id=${cat.id}" style="font-size:13px;font-weight:600;color:#212121;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat.name)}</a>
-                <div style="font-size:11px;color:#388e3c;font-weight:600;margin-top:3px;">${cat.imageCount + cat.videoCount} items</div>
-                <div style="font-size:10px;color:#aaa;margin-top:1px;">${formatShortDate(cat.createdAt)}</div>
+                <a href="./category.html?id=${cat.id}" style="font-size:13px;font-weight:600;color:#fff;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat.name)}</a>
+                <div style="font-size:11px;color:#AAFF20;font-weight:600;margin-top:3px;">${cat.imageCount + cat.videoCount} items</div>
+                <div style="font-size:10px;color:#666;margin-top:1px;">${formatShortDate(cat.createdAt)}</div>
               </div>
             </div>
           ` : `
             <!-- List row: thumbnail + info stacked cleanly -->
-            <div style="background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden;">
+            <div style="background:#111;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.4);overflow:hidden;">
               <div style="display:flex;align-items:center;gap:12px;padding:12px;">
                 <!-- Thumb -->
                 <a href="./category.html?id=${cat.id}" style="flex-shrink:0;">
-                  <div style="width:52px;height:52px;border-radius:3px;overflow:hidden;background:linear-gradient(135deg,#e3f2fd,#bbdefb);display:flex;align-items:center;justify-content:center;">
+                  <div style="width:52px;height:52px;border-radius:3px;overflow:hidden;background:linear-gradient(135deg,#0d1a00,#1a3300);display:flex;align-items:center;justify-content:center;">
                     ${coverUrls.has(cat.id)
                       ? `<img src="${coverUrls.get(cat.id)}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />`
-                      : `<svg width="22" height="22" fill="none" stroke="#90caf9" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
+                      : `<svg width="22" height="22" fill="none" stroke="#AAFF20" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
                   </div>
                 </a>
                 <!-- Info -->
                 <div style="flex:1;min-width:0;">
-                  <a href="./category.html?id=${cat.id}" style="font-size:14px;font-weight:600;color:#212121;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat.name)}</a>
-                  <div style="font-size:11px;color:#888;margin-top:2px;">${cat.imageCount} img · ${cat.videoCount} vid · ${cat.favoriteCount} fav</div>
-                  <div style="font-size:10px;color:#bbb;margin-top:1px;">${formatShortDate(cat.createdAt)}</div>
+                  <a href="./category.html?id=${cat.id}" style="font-size:14px;font-weight:600;color:#fff;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat.name)}</a>
+                  <div style="font-size:11px;color:#aaa;margin-top:2px;">${cat.imageCount} img Ã‚Â· ${cat.videoCount} vid Ã‚Â· ${cat.favoriteCount} fav</div>
+                  <div style="font-size:10px;color:#666;margin-top:1px;">${formatShortDate(cat.createdAt)}</div>
                 </div>
                 <!-- Actions -->
                 <div style="display:flex;gap:6px;flex-shrink:0;">
@@ -300,10 +300,10 @@ export async function initDashboard() {
               </div>
             </div>
           `).join("") : `
-            <div style="grid-column:1/-1;background:#fff;border-radius:4px;padding:48px 20px;text-align:center;">
-              <svg width="40" height="40" fill="none" stroke="#d0d0d0" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 10px;"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
-              <p style="font-size:14px;font-weight:500;color:#bbb;">No categories yet</p>
-              <p style="font-size:12px;margin-top:4px;color:#ccc;">Tap <strong style="color:#2874f0;">+ Add</strong> to get started.</p>
+            <div style="grid-column:1/-1;background:#111;border-radius:4px;padding:48px 20px;text-align:center;">
+              <svg width="40" height="40" fill="none" stroke="#333" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 10px;"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+              <p style="font-size:14px;font-weight:500;color:#aaa;">No categories yet</p>
+              <p style="font-size:12px;margin-top:4px;color:#444;">Tap <strong style="color:#AAFF20;">+ Add</strong> to get started.</p>
             </div>
           `}
         </div>

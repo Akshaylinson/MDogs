@@ -1,16 +1,16 @@
-﻿:root {
-  color-scheme: light;
-  --bg: #ffffff;
-  --bg-soft: #f8fafc;
-  --surface: #ffffff;
-  --surface-soft: #f8fafc;
-  --surface-hover: #f3f4f6;
-  --border: #e5e7eb;
-  --border-strong: #d1d5db;
-  --text: #111827;
-  --text-soft: #6b7280;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
+:root {
+  color-scheme: dark;
+  --bg: #000000;
+  --bg-soft: #0a0a0a;
+  --surface: #111111;
+  --surface-soft: #0d0d0d;
+  --surface-hover: #1a1a1a;
+  --border: #222222;
+  --border-strong: #333333;
+  --text: #ffffff;
+  --text-soft: #aaaaaa;
+  --primary: #AAFF20;
+  --primary-hover: #8fe000;
   --success: #10b981;
   --danger: #ef4444;
   --warning: #f59e0b;
@@ -25,17 +25,17 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0b0d12;
-  --bg-soft: #111827;
-  --surface: #111827;
-  --surface-soft: #0f172a;
-  --surface-hover: #1f2937;
-  --border: #1f2937;
-  --border-strong: #374151;
-  --text: #f9fafb;
-  --text-soft: #9ca3af;
-  --primary: #60a5fa;
-  --primary-hover: #3b82f6;
+  --bg: #000000;
+  --bg-soft: #090909;
+  --surface: #111111;
+  --surface-soft: #0d0d0d;
+  --surface-hover: #1a1a1a;
+  --border: #222222;
+  --border-strong: #333333;
+  --text: #ffffff;
+  --text-soft: #aaaaaa;
+  --primary: #AAFF20;
+  --primary-hover: #8fe000;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.32);
   --shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.4);
@@ -48,7 +48,7 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.06), transparent 18%),
+    radial-gradient(circle at top left, rgba(170, 255, 32, 0.1), transparent 18%),
     linear-gradient(180deg, var(--bg), var(--bg-soft));
   color: var(--text);
   font-family: Inter, system-ui, sans-serif;
@@ -60,8 +60,8 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(17, 24, 39, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 24, 39, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(170, 255, 32, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(170, 255, 32, 0.05) 1px, transparent 1px);
   background-size: 32px 32px;
   opacity: 0.3;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 60%);
@@ -87,7 +87,7 @@ video {
   top: 0;
   height: 100vh;
   border-right: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(10px);
   padding: 1.25rem;
 }
@@ -147,7 +147,7 @@ html[data-theme="dark"] .sidebar {
   margin-bottom: 1.5rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(0, 0, 0, 0.84);
   backdrop-filter: blur(12px);
   padding: 1rem 1.1rem;
   box-shadow: var(--shadow-sm);
@@ -180,7 +180,7 @@ html[data-theme="dark"] .topbar {
 .hero-card {
   border-radius: 1.75rem;
   border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.96));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.96));
   box-shadow: var(--shadow-md);
 }
 
@@ -240,7 +240,7 @@ html[data-theme="dark"] .hero-card {
 .primary-button {
   padding: 0.75rem 1rem;
   background: var(--primary);
-  color: #ffffff;
+  color: #000000;
   border-color: var(--primary);
 }
 
@@ -267,7 +267,7 @@ html[data-theme="dark"] .hero-card {
 .danger-button:focus-visible,
 .sidebar-link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+  box-shadow: 0 0 0 2px rgba(170, 255, 32, 0.28);
   border-color: var(--primary);
 }
 
@@ -426,9 +426,9 @@ html[data-theme="dark"] .hero-card {
   gap: 0.35rem;
   border-radius: 999px;
   padding: 0.35rem 0.65rem;
-  background: rgba(255, 255, 255, 0.94);
-  color: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.94);
+  background: var(--primary);
+  color: #000000;
+  border: 1px solid var(--primary);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
@@ -453,7 +453,7 @@ html[data-theme="dark"] .hero-card {
 .viewer-shell {
   width: min(1180px, 95vw);
   max-height: 92vh;
-  background: #ffffff;
+  background: #000000;
 }
 
 html[data-theme="dark"] .viewer-shell {
@@ -490,8 +490,8 @@ html[data-theme="dark"] .viewer-shell {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(17, 24, 39, 0.75);
+  border: 1px solid rgba(170, 255, 32, 0.16);
+  background: rgba(17, 17, 17, 0.88);
   backdrop-filter: blur(14px);
   border-radius: 999px;
   padding: 0.6rem 0.75rem;
@@ -586,3 +586,4 @@ html[data-theme="dark"] .viewer-shell {
     height: 160px;
   }
 }
+

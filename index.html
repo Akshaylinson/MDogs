@@ -3,47 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#2874f0" />
+  <meta name="theme-color" content="#AAFF20" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MeraDogs" />
   <link rel="manifest" href="./manifest.json" />
-  <title>MeraDogs — Media Archive</title>
+  <title>MeraDogs â€” Media Archive</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./css/styles.css" />
   <style>
     * { box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #f1f3f6; color: #212121; margin: 0; }
+    body { font-family: 'Inter', sans-serif; background: #000000; color: #ffffff; margin: 0; }
     #app > div { padding-left: 12px !important; padding-right: 12px !important; }
     @media (min-width: 640px) { #app > div { padding-left: 20px !important; padding-right: 20px !important; } }
 
-    /* ── Navbar ── */
-    .fk-nav { background: #2874f0; width: 100%; }
+    /* â”€â”€ Navbar â”€â”€ */
+    .fk-nav { background: #AAFF20; width: 100%; }
     .fk-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 20px; height: 56px; display: flex; align-items: center; gap: 16px; }
     .fk-brand { display: flex; flex-direction: column; line-height: 1.1; text-decoration: none; flex-shrink: 0; }
-    .fk-brand-name { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
-    .fk-brand-sub { color: #ffe500; font-size: 10px; font-style: italic; font-weight: 500; }
+    .fk-brand-name { color: #000; font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
+    .fk-brand-sub { color: #000; font-size: 10px; font-style: italic; font-weight: 500; }
 
     /* Search */
-    .fk-searchbar { flex: 1; max-width: 580px; display: flex; align-items: center; background: #fff; border-radius: 2px; overflow: hidden; height: 36px; }
-    .fk-searchbar input { flex: 1; border: none; outline: none; padding: 0 14px; font-size: 14px; color: #333; background: transparent; }
-    .fk-searchbar button { background: #2874f0; border: none; padding: 0 16px; height: 100%; cursor: pointer; display: flex; align-items: center; }
-    .fk-searchbar button svg { color: #fff; }
+    .fk-searchbar { flex: 1; max-width: 580px; display: flex; align-items: center; background: #111; border-radius: 2px; overflow: hidden; height: 36px; }
+    .fk-searchbar input { flex: 1; border: none; outline: none; padding: 0 14px; font-size: 14px; color: #fff; background: transparent; }
+    .fk-searchbar button { background: #AAFF20; border: none; padding: 0 16px; height: 100%; cursor: pointer; display: flex; align-items: center; color: #000; }
+    .fk-searchbar button svg { color: #000; }
 
     /* Nav links */
     .fk-navlinks { display: flex; align-items: center; gap: 24px; margin-left: auto; }
-    .fk-navlinks a { color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; opacity: .9; }
-    .fk-navlinks a:hover, .fk-navlinks a.active { opacity: 1; border-bottom: 2px solid #ffe500; padding-bottom: 2px; }
-    .fk-navlinks .fk-add-btn { background: #fff; color: #2874f0; font-weight: 700; font-size: 13px; padding: 6px 16px; border-radius: 2px; border: none; cursor: pointer; white-space: nowrap; }
-    .fk-navlinks .fk-add-btn:hover { background: #f0f0f0; }
+    .fk-navlinks a { color: #000; text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; opacity: .9; }
+    .fk-navlinks a:hover, .fk-navlinks a.active { opacity: 1; border-bottom: 2px solid #000; padding-bottom: 2px; }
+    .fk-navlinks .fk-add-btn { background: #000; color: #AAFF20; font-weight: 700; font-size: 13px; padding: 6px 16px; border-radius: 2px; border: none; cursor: pointer; white-space: nowrap; }
+    .fk-navlinks .fk-add-btn:hover { background: #111; }
 
     /* Mobile bottom nav */
-    .mob-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e0e0e0; z-index: 50; }
-    .mob-nav a { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 8px 0 6px; font-size: 11px; color: #666; text-decoration: none; gap: 3px; }
-    .mob-nav a.active { color: #2874f0; }
+    .mob-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #111; border-top: 1px solid #222; z-index: 50; }
+    .mob-nav a { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 8px 0 6px; font-size: 11px; color: #888; text-decoration: none; gap: 3px; }
+    .mob-nav a.active { color: #AAFF20; }
 
     @media (max-width: 768px) {
       .fk-navlinks { display: none; }
@@ -58,11 +58,11 @@
     <div class="fk-nav-inner">
       <a href="./index.html" class="fk-brand">
         <span class="fk-brand-name">MeraDogs</span>
-        <span class="fk-brand-sub">Media Archive ✦</span>
+        <span class="fk-brand-sub">Media Archive âœ¦</span>
       </a>
 
       <div class="fk-searchbar">
-        <input id="navbar-search" type="text" placeholder="Search categories, media…" autocomplete="off" />
+        <input id="navbar-search" type="text" placeholder="Search categories, mediaâ€¦" autocomplete="off" />
         <button aria-label="Search">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -106,3 +106,4 @@
   </script>
 </body>
 </html>
+
