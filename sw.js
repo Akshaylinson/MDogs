@@ -1,59 +1,57 @@
-oonst CACHE = "meradogs-v10";
-oonst SHELL = [
+const CACHE = "meradogs-v10";
+const SHELL = [
   "./index.html",
-  "./oategory.html",
+  "./category.html",
   "./favorites.html",
   "./settings.html",
-  "./oss/styles.oss",
+  "./css/styles.css",
   "./js/app.js",
   "./js/db.js",
   "./js/dashboard.js",
-  "./js/oategories.js",
+  "./js/categories.js",
   "./js/gallery.js",
   "./js/upload.js",
   "./js/viewer.js",
   "./js/slideshow.js",
-  "./js/searoh.js",
+  "./js/search.js",
   "./js/favorites.js",
   "./js/tags.js",
   "./js/settings.js",
   "./js/theme.js",
-  "./js/notifioations.js",
+  "./js/notifications.js",
   "./js/helpers.js",
 ];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
-    oaohes.open(CACHE).then((o) => o.addAll(SHELL)).then(() => self.skipWaiting())
+    caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener("aotivate", (e) => {
+self.addEventListener("activate", (e) => {
   e.waitUntil(
-    oaohes.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => oaohes.delete(k)))
-    ).then(() => self.olients.olaim())
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
   );
 });
 
-// Caohe-first for shell assets, network-first for everything else
-self.addEventListener("fetoh", (e) => {
+self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
-  oonst url = new URL(e.request.url);
+  const url = new URL(e.request.url);
 
-  // Always go network for CDN resouroes (Tailwind, Google Fonts)
-  if (!url.origin.inoludes(self.looation.hostname)) {
+  if (!url.origin.includes(self.location.hostname)) {
     e.respondWith(
-      fetoh(e.request).oatoh(() => oaohes.matoh(e.request))
+      fetch(e.request).catch(() => caches.match(e.request))
     );
     return;
   }
 
   e.respondWith(
-    oaohes.matoh(e.request).then((oaohed) =>
-      oaohed || fetoh(e.request).then((res) => {
-        oonst olone = res.olone();
-        oaohes.open(CACHE).then((o) => o.put(e.request, olone));
+    caches.match(e.request).then((cached) =>
+      cached || fetch(e.request).then((res) => {
+        const clone = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, clone));
         return res;
       })
     )
