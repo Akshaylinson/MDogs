@@ -38,55 +38,55 @@ export async function initFavoritesPage() {
     <div style="max-width:1280px;margin:0 auto;padding:24px 20px 40px;">
 
       <!-- Stats box -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px;">
-        <div style="padding:14px 10px;text-align:center;border-right:1px solid #f0f0f0;">
-          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Favorites</div>
-          <div style="font-size:22px;font-weight:700;color:#e53935;margin-top:4px;line-height:1;">${favorites.length}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);background:#111;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.4);overflow:hidden;margin-bottom:20px;">
+        <div style="padding:14px 10px;text-align:center;border-right:1px solid #222;">
+          <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Favorites</div>
+          <div style="font-size:22px;font-weight:700;color:#AAFF20;margin-top:4px;line-height:1;">${favorites.length}</div>
         </div>
-        <div style="padding:14px 10px;text-align:center;border-right:1px solid #f0f0f0;">
-          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Media</div>
-          <div style="font-size:22px;font-weight:700;color:#212121;margin-top:4px;line-height:1;">${totalImages + totalVideos}</div>
+        <div style="padding:14px 10px;text-align:center;border-right:1px solid #222;">
+          <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Media</div>
+          <div style="font-size:22px;font-weight:700;color:#fff;margin-top:4px;line-height:1;">${totalImages + totalVideos}</div>
           <div style="font-size:10px;color:#aaa;margin-top:3px;">${totalImages} img &middot; ${totalVideos} vid</div>
         </div>
         <div style="padding:14px 10px;text-align:center;">
-          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Categories</div>
-          <div style="font-size:22px;font-weight:700;color:#2874f0;margin-top:4px;line-height:1;">${categories.length}</div>
+          <div style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;">Categories</div>
+          <div style="font-size:22px;font-weight:700;color:#AAFF20;margin-top:4px;line-height:1;">${categories.length}</div>
         </div>
       </div>
 
       <!-- Section header + filter bar -->
       <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;">
         <div>
-          <div style="font-size:20px;font-weight:700;color:#212121;">Saved Favorites</div>
-          <div style="font-size:13px;color:#888;margin-top:2px;">All your saved media across every category</div>
+          <div style="font-size:20px;font-weight:700;color:#fff;">Saved Favorites</div>
+          <div style="font-size:13px;color:#aaa;margin-top:2px;">All your saved media across every category</div>
         </div>
 
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <!-- Search -->
-          <div style="display:flex;align-items:center;background:#fff;border:1px solid #d0d0d0;border-radius:2px;overflow:hidden;height:36px;">
-            <span style="padding:0 10px;color:#aaa;display:flex;align-items:center;">
+          <div style="display:flex;align-items:center;background:#111;border:1px solid #333;border-radius:2px;overflow:hidden;height:36px;">
+            <span style="padding:0 10px;color:#666;display:flex;align-items:center;">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             </span>
             <input id="favSearch" type="text" placeholder="Search…"
-              style="border:none;outline:none;font-size:13px;color:#333;background:transparent;width:140px;padding-right:8px;" />
+              style="border:none;outline:none;font-size:13px;color:#fff;background:transparent;width:140px;padding-right:8px;" />
           </div>
 
           <!-- Type toggle group -->
-          <div style="display:flex;border:1px solid #d0d0d0;border-radius:2px;overflow:hidden;height:36px;background:#fff;">
-            <button id="typeAll" title="All media" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;background:#2874f0;cursor:pointer;">
-              <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <div style="display:flex;border:1px solid #333;border-radius:2px;overflow:hidden;height:36px;background:#111;">
+            <button id="typeAll" title="All media" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;background:#AAFF20;cursor:pointer;">
+              <svg width="16" height="16" fill="none" stroke="#000" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             </button>
-            <button id="typeImage" title="Images only" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;border-left:1px solid #d0d0d0;background:#fff;cursor:pointer;">
-              <svg width="16" height="16" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <button id="typeImage" title="Images only" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;border-left:1px solid #333;background:#111;cursor:pointer;">
+              <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             </button>
-            <button id="typeVideo" title="Videos only" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;border-left:1px solid #d0d0d0;background:#fff;cursor:pointer;">
-              <svg width="16" height="16" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            <button id="typeVideo" title="Videos only" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;border-left:1px solid #333;background:#111;cursor:pointer;">
+              <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
             </button>
           </div>
 
           <!-- Slideshow -->
-          <button id="slideshow" title="Start slideshow" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#2874f0;border:none;border-radius:2px;cursor:pointer;">
-            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
+          <button id="slideshow" title="Start slideshow" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#AAFF20;border:none;border-radius:2px;cursor:pointer;">
+            <svg width="16" height="16" fill="#000" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg>
           </button>
         </div>
       </div>
@@ -103,12 +103,12 @@ export async function initFavoritesPage() {
 
     if (!filtered.length) {
       grid.innerHTML = `
-        <div style="grid-column:1/-1;background:#fff;border-radius:4px;padding:60px 20px;text-align:center;color:#aaa;">
-          <svg width="48" height="48" fill="none" stroke="#ffcdd2" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 12px;">
+        <div style="grid-column:1/-1;background:#111;border-radius:4px;padding:60px 20px;text-align:center;color:#aaa;">
+          <svg width="48" height="48" fill="none" stroke="#AAFF20" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 12px;opacity:.4;">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
-          <p style="font-size:14px;font-weight:500;color:#bbb;">No favorites yet</p>
-          <p style="font-size:12px;margin-top:4px;">Open a category and save media using the ♡ button.</p>
+          <p style="font-size:14px;font-weight:500;color:#aaa;">No favorites yet</p>
+          <p style="font-size:12px;margin-top:4px;color:#555;">Open a category and save media using the ♡ button.</p>
         </div>`;
       return;
     }
@@ -139,17 +139,17 @@ export async function initFavoritesPage() {
             </div>
           </div>
           <div style="padding:8px 10px;">
-            <p style="font-size:12px;font-weight:600;color:#212121;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.fileName)}</p>
-            <a href="./category.html?id=${item.categoryId}" style="font-size:11px;color:#2874f0;text-decoration:none;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(catName)}</a>
+            <p style="font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.fileName)}</p>
+            <a href="./category.html?id=${item.categoryId}" style="font-size:11px;color:#AAFF20;text-decoration:none;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(catName)}</a>
             <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">
-              ${(item.tags || []).slice(0, 3).map((t) => `<span style="background:#fce4ec;color:#c62828;font-size:10px;padding:2px 6px;border-radius:2px;">${escapeHtml(t)}</span>`).join("")}
+              ${(item.tags || []).slice(0, 3).map((t) => `<span style="background:#1a2e00;color:#AAFF20;font-size:10px;padding:2px 6px;border-radius:2px;">${escapeHtml(t)}</span>`).join("")}
             </div>
             <div style="display:flex;gap:5px;margin-top:8px;">
-              <button data-action="open" data-id="${item.id}" style="flex:1;height:28px;background:#2874f0;color:#fff;border:none;font-size:11px;border-radius:2px;cursor:pointer;font-weight:600;">Open</button>
-              <button data-action="download" data-id="${item.id}" style="height:28px;padding:0 8px;background:#fff;border:1px solid #d0d0d0;color:#555;font-size:11px;border-radius:2px;cursor:pointer;" title="Download">
+              <button data-action="open" data-id="${item.id}" style="flex:1;height:28px;background:#AAFF20;color:#000;border:none;font-size:11px;border-radius:2px;cursor:pointer;font-weight:600;">Open</button>
+              <button data-action="download" data-id="${item.id}" style="height:28px;padding:0 8px;background:#1a1a1a;border:1px solid #333;color:#aaa;font-size:11px;border-radius:2px;cursor:pointer;" title="Download">
                 <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               </button>
-              <button data-action="unfav" data-id="${item.id}" style="height:28px;padding:0 8px;background:#fff;border:1px solid #ffcdd2;color:#e53935;font-size:11px;border-radius:2px;cursor:pointer;" title="Remove favorite">
+              <button data-action="unfav" data-id="${item.id}" style="height:28px;padding:0 8px;background:#1a1a1a;border:1px solid #333;color:#e53935;font-size:11px;border-radius:2px;cursor:pointer;" title="Remove favorite">
                 <svg width="13" height="13" fill="#e53935" stroke="#e53935" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </button>
             </div>
@@ -178,8 +178,8 @@ export async function initFavoritesPage() {
       const btn = document.getElementById(id);
       if (!btn) return;
       const active = t === type;
-      btn.style.background = active ? "#2874f0" : "#fff";
-      btn.querySelector("svg").setAttribute("stroke", active ? "white" : "#555");
+      btn.style.background = active ? "#AAFF20" : "#111";
+      btn.querySelector("svg").setAttribute("stroke", active ? "#000" : "#aaa");
     });
     applyFilter();
   }
