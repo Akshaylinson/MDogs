@@ -234,7 +234,7 @@ async function initCategoryPage() {
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#888;">
           <a href="./index.html" style="color:#2874f0;text-decoration:none;font-weight:500;">Library</a>
           <span>›</span>
-          <span style="color:#212121;font-weight:600;">${escapeHtml(category.name)}</span>
+          <span style="color:#212121;font-weight:600;" data-cat-name>${escapeHtml(category.name)}</span>
         </div>
 
         <!-- Filter bar -->
@@ -304,7 +304,11 @@ async function initCategoryPage() {
               </button>
 
               <div style="padding:8px 14px;border-top:1px solid #f0f0f0;margin-top:2px;">
-                <button id="resetFilters" style="width:100%;padding:8px 0;border:1px solid #d0d0d0;border-radius:2px;background:#f5f5f5;color:#555;font-size:12px;font-weight:600;cursor:pointer;">↺ Reset Filters</button>
+                <button id="resetFilters" style="width:100%;padding:8px 0;border:1px solid #d0d0d0;border-radius:2px;background:#f5f5f5;color:#555;font-size:12px;font-weight:600;cursor:pointer;margin-bottom:6px;">↺ Reset Filters</button>
+                <button id="catSettingsBtn" style="width:100%;padding:8px 0;border:1px solid #d0d0d0;border-radius:2px;background:#fff;color:#333;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  Category Settings
+                </button>
               </div>
             </div>
           </div>
@@ -388,6 +392,140 @@ async function initCategoryPage() {
     await refresh();
     notify("Filters reset");
   });
+
+  // ── Category Settings modal ───────────────────────────────────────────────
+  function openCategorySettings() {
+    filterMenu.style.display = "none";
+    filterMenuBtn.style.background = "#fff";
+    filterMenuBtn.style.borderColor = "#d0d0d0";
+
+    let previewUrl = null;
+    let newThumbFile = null;
+    const existingThumb = category.thumbnailBlob || null;
+    if (existingThumb) { previewUrl = URL.createObjectURL(existingThumb); }
+
+    modalRoot.innerHTML = `
+      <div id="cs-backdrop" style="
+        position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;
+        display:flex;align-items:center;justify-content:center;padding:16px;">
+        <div style="background:#fff;border-radius:4px;width:100%;max-width:460px;
+          box-shadow:0 8px 40px rgba(0,0,0,.22);overflow:hidden;display:flex;flex-direction:column;max-height:90vh;">
+
+          <!-- Header -->
+          <div style="background:#2874f0;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+            <div>
+              <div style="color:#fff;font-size:16px;font-weight:700;">Category Settings</div>
+              <div style="color:#bbdefb;font-size:12px;margin-top:2px;">${escapeHtml(category.name)}</div>
+            </div>
+            <button id="cs-close" style="background:none;border:none;cursor:pointer;color:#fff;">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div style="padding:20px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;flex:1;min-height:0;">
+
+            <!-- Rename -->
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#212121;display:block;margin-bottom:6px;">Category Name</label>
+              <input id="cs-name" type="text" value="${escapeHtml(category.name)}"
+                style="width:100%;height:40px;border:1px solid #d0d0d0;border-radius:2px;padding:0 12px;font-size:14px;color:#212121;outline:none;box-sizing:border-box;"
+                onfocus="this.style.borderColor='#2874f0'" onblur="this.style.borderColor='#d0d0d0'" />
+            </div>
+
+            <!-- Thumbnail -->
+            <div>
+              <label style="font-size:13px;font-weight:600;color:#212121;display:block;margin-bottom:6px;">Thumbnail Image</label>
+              <div id="cs-dropzone" style="
+                position:relative;border:2px dashed #d0d0d0;border-radius:4px;
+                cursor:pointer;background:#fafafa;transition:border-color .2s;overflow:hidden;">
+                <input id="cs-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"
+                  style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:1;" />
+                <div id="cs-preview" style="text-align:center;padding:${previewUrl ? "0" : "20px 16px"};">
+                  ${previewUrl
+                    ? `<img src="${previewUrl}" style="width:100%;height:140px;object-fit:cover;display:block;" />`
+                    : `<svg width="32" height="32" fill="none" stroke="#bbb" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 8px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                       <p style="font-size:12px;color:#aaa;">Click or drag to change thumbnail</p>`}
+                </div>
+              </div>
+            </div>
+
+            <!-- Danger zone -->
+            <div style="border:1px solid #ffcdd2;border-radius:4px;padding:14px 16px;">
+              <div style="font-size:12px;font-weight:700;color:#e53935;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Danger Zone</div>
+              <p style="font-size:12px;color:#888;margin-bottom:10px;">Permanently delete this category and all its media. This cannot be undone.</p>
+              <button id="cs-delete" style="width:100%;padding:9px 0;border:1px solid #e53935;border-radius:2px;background:#fff;color:#e53935;font-size:13px;font-weight:600;cursor:pointer;">Delete Category</button>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div style="padding:14px 20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #f0f0f0;flex-shrink:0;">
+            <button id="cs-cancel" style="height:40px;padding:0 20px;border:1px solid #d0d0d0;border-radius:2px;background:#fff;color:#555;font-size:14px;cursor:pointer;">Cancel</button>
+            <button id="cs-save" style="height:40px;padding:0 24px;border:none;border-radius:2px;background:#2874f0;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const closeModal = () => {
+      if (previewUrl && newThumbFile) URL.revokeObjectURL(previewUrl);
+      modalRoot.innerHTML = "";
+    };
+
+    document.getElementById("cs-close").addEventListener("click", closeModal);
+    document.getElementById("cs-cancel").addEventListener("click", closeModal);
+    document.getElementById("cs-backdrop").addEventListener("click", (e) => { if (e.target.id === "cs-backdrop") closeModal(); });
+
+    document.getElementById("cs-file").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      newThumbFile = file;
+      if (previewUrl && previewUrl !== URL.createObjectURL(existingThumb)) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(file);
+      const preview = document.getElementById("cs-preview");
+      const dropzone = document.getElementById("cs-dropzone");
+      preview.style.padding = "0";
+      preview.innerHTML = `<img src="${previewUrl}" style="width:100%;height:140px;object-fit:cover;display:block;" />`;
+      dropzone.style.borderColor = "#2874f0";
+    });
+
+    document.getElementById("cs-save").addEventListener("click", async () => {
+      const newName = document.getElementById("cs-name").value.trim();
+      if (!newName) { document.getElementById("cs-name").style.borderColor = "#e53935"; return; }
+      const saveBtn = document.getElementById("cs-save");
+      saveBtn.disabled = true; saveBtn.textContent = "Saving…";
+      const { renameCategory } = await import("./categories.js");
+      const { put: putRow } = await import("./db.js");
+      if (newName !== category.name) await renameCategory(category.id, newName);
+      if (newThumbFile) {
+        const { compressThumbnail } = await import("./categories.js").catch(() => null) || {};
+        // compress inline if import unavailable
+        const blob = await new Promise((res) => {
+          const img = new Image(); const u = URL.createObjectURL(newThumbFile);
+          img.onload = () => { URL.revokeObjectURL(u); const MAX=240,r=Math.min(MAX/img.width,MAX/img.height,1),c=document.createElement("canvas"); c.width=Math.round(img.width*r); c.height=Math.round(img.height*r); c.getContext("2d").drawImage(img,0,0,c.width,c.height); c.toBlob((b)=>res(b),"image/jpeg",.75); };
+          img.src = u;
+        });
+        category.thumbnailBlob = blob;
+        category.updatedAt = new Date().toISOString();
+        await putRow("categories", category);
+      }
+      category.name = newName;
+      // update breadcrumb
+      const breadcrumb = document.querySelector("[data-cat-name]");
+      if (breadcrumb) breadcrumb.textContent = newName;
+      closeModal();
+      notify("Category updated");
+    });
+
+    document.getElementById("cs-delete").addEventListener("click", async () => {
+      if (!confirm(`Delete "${category.name}" and all its media? This cannot be undone.`)) return;
+      const { deleteCategory } = await import("./categories.js");
+      await deleteCategory(category.id);
+      window.location.href = "./index.html";
+    });
+  }
+
+  document.getElementById("catSettingsBtn").addEventListener("click", openCategorySettings);
 
   // Navbar search
   const navSearch = document.getElementById("navbar-search");

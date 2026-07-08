@@ -273,11 +273,6 @@ export async function initDashboard() {
                 <a href="./category.html?id=${cat.id}" style="font-size:13px;font-weight:600;color:#212121;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(cat.name)}</a>
                 <div style="font-size:11px;color:#388e3c;font-weight:600;margin-top:3px;">${cat.imageCount + cat.videoCount} items</div>
                 <div style="font-size:10px;color:#aaa;margin-top:1px;">${formatShortDate(cat.createdAt)}</div>
-                <div style="display:flex;gap:5px;margin-top:8px;">
-                  <a href="./category.html?id=${cat.id}" style="flex:1;text-align:center;background:#2874f0;color:#fff;font-size:11px;font-weight:600;padding:6px 0;border-radius:2px;text-decoration:none;">Open</a>
-                  <button data-action="rename" data-id="${cat.id}" style="flex:1;background:#fff;border:1px solid #d0d0d0;color:#555;font-size:11px;padding:6px 0;border-radius:2px;cursor:pointer;">Rename</button>
-                  <button data-action="delete" data-id="${cat.id}" style="background:#fff;border:1px solid #ffcdd2;color:#e53935;font-size:11px;padding:6px 8px;border-radius:2px;cursor:pointer;">✕</button>
-                </div>
               </div>
             </div>
           ` : `
@@ -300,9 +295,6 @@ export async function initDashboard() {
                 </div>
                 <!-- Actions -->
                 <div style="display:flex;gap:6px;flex-shrink:0;">
-                  <a href="./category.html?id=${cat.id}" style="background:#2874f0;color:#fff;font-size:12px;font-weight:600;padding:6px 12px;border-radius:2px;text-decoration:none;white-space:nowrap;">Open</a>
-                  <button data-action="rename" data-id="${cat.id}" style="background:#fff;border:1px solid #d0d0d0;color:#555;font-size:12px;padding:6px 10px;border-radius:2px;cursor:pointer;">✎</button>
-                  <button data-action="delete" data-id="${cat.id}" style="background:#fff;border:1px solid #ffcdd2;color:#e53935;font-size:12px;padding:6px 8px;border-radius:2px;cursor:pointer;">✕</button>
                 </div>
               </div>
             </div>
