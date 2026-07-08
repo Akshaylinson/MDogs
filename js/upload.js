@@ -39,31 +39,39 @@ async function makeThumbnail(file) {
   if (isVideoFile(file)) {
     return new Promise((resolve) => {
       const video = document.createElement("video");
+      const src = URL.createObjectURL(file);
       video.preload = "metadata";
       video.muted = true;
-      video.src = URL.createObjectURL(file);
-      video.addEventListener("loadeddata", async () => {
+      video.playsInline = true;
+      video.src = src;
+
+      const cleanup = () => URL.revokeObjectURL(src);
+
+      const capture = () => {
         try {
-          video.currentTime = Math.min(1, video.duration || 1);
+          const canvas = document.createElement("canvas");
+          canvas.width = 480;
+          canvas.height = Math.round(480 * (video.videoHeight / video.videoWidth)) || 270;
+          canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => { cleanup(); resolve(blob); }, "image/jpeg", 0.82);
         } catch {
-          URL.revokeObjectURL(video.src);
-          resolve(null);
+          cleanup(); resolve(null);
         }
-      });
-      video.addEventListener("seeked", () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = 480;
-        canvas.height = 270;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob((blob) => {
-          URL.revokeObjectURL(video.src);
-          resolve(blob);
-        }, "image/jpeg", 0.82);
+      };
+
+      video.addEventListener("seeked", capture, { once: true });
+      video.addEventListener("error", () => { cleanup(); resolve(null); }, { once: true });
+
+      video.addEventListener("loadedmetadata", () => {
+        video.currentTime = Math.min(1, video.duration * 0.1 || 0);
       }, { once: true });
-      video.addEventListener("error", () => {
-        URL.revokeObjectURL(video.src);
-        resolve(null);
+
+      // fallback: if seeked never fires, try capturing after a short delay
+      video.addEventListener("loadeddata", () => {
+        setTimeout(() => {
+          if (video.readyState >= 2) capture();
+          else { cleanup(); resolve(null); }
+        }, 300);
       }, { once: true });
     });
   }

@@ -13,7 +13,7 @@ import { put as putRow, getById, del as delRow } from "./db.js";
 import { existingTags } from "./tags.js";
 
 function mediaUrl(item) {
-  const blob = item.thumbnailBlob || item.blobData;
+  const blob = item.thumbnailBlob || (item.mediaType === "image" ? item.blobData : null);
   return blob ? URL.createObjectURL(blob) : "";
 }
 
@@ -179,12 +179,15 @@ async function initCategoryPage() {
         <div class="fk-media-card" data-action="open" data-id="${item.id}" style="cursor:pointer;">
           <div class="fk-media-thumb-wrap">
             ${url
-              ? (isVideo
-                  ? `<video src="${url}" class="fk-media-thumb" muted playsinline preload="metadata"></video>`
-                  : `<img src="${url}" class="fk-media-thumb" alt="${escapeHtml(item.fileName)}" loading="lazy" />`)
-              : `<div class="fk-media-thumb" style="display:flex;align-items:center;justify-content:center;">
-                   <svg width="32" height="32" fill="none" stroke="#90caf9" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              ? `<img src="${url}" class="fk-media-thumb" alt="${escapeHtml(item.fileName)}" loading="lazy" />`
+              : `<div class="fk-media-thumb" style="display:flex;align-items:center;justify-content:center;background:#1a1a2e;">
+                   <svg width="40" height="40" fill="none" stroke="#90caf9" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="#90caf9" stroke="none"/></svg>
                  </div>`}
+            ${isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+              <div style="width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.7);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              </div>
+            </div>` : ""}
             <div class="fk-media-overlay">
               <div style="display:flex;justify-content:flex-start;align-items:flex-start;">
                 <span class="fk-chip">${isVideo ? "▶ Video" : "🖼 Image"}</span>
