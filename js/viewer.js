@@ -67,19 +67,36 @@ export function openViewer(items, startIndex = 0, options = {}) {
       width:100%;max-width:1100px;height:100%;max-height:100vh;
       display:flex;flex-direction:column;background:#111;overflow:hidden;">
 
-      <!-- ── Top bar: brand + file info only ── -->
+      <!-- ── Top bar: brand + file info + download/tags/delete/close ── -->
       <div style="
         background:#2874f0;
-        display:flex;align-items:center;
-        padding:0 16px;height:52px;flex-shrink:0;gap:12px;">
-        <div style="display:flex;flex-direction:column;line-height:1.1;flex-shrink:0;">
-          <span style="color:#fff;font-size:15px;font-weight:700;letter-spacing:-.3px;">MeraDogs</span>
-          <span style="color:#ffe500;font-size:9px;font-style:italic;">Media Viewer ✦</span>
+        display:flex;align-items:center;justify-content:space-between;
+        padding:0 16px;height:52px;flex-shrink:0;gap:10px;">
+        <!-- Brand + file info -->
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;">
+          <div style="display:flex;flex-direction:column;line-height:1.1;flex-shrink:0;">
+            <span style="color:#fff;font-size:15px;font-weight:700;letter-spacing:-.3px;">MeraDogs</span>
+            <span style="color:#ffe500;font-size:9px;font-style:italic;">Media Viewer ✦</span>
+          </div>
+          <div style="width:1px;height:28px;background:rgba(255,255,255,.25);flex-shrink:0;"></div>
+          <div style="min-width:0;">
+            <div id="vw-filename" style="color:#fff;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;"></div>
+            <div id="vw-counter" style="color:#bbdefb;font-size:11px;margin-top:1px;"></div>
+          </div>
         </div>
-        <div style="width:1px;height:28px;background:rgba(255,255,255,.25);flex-shrink:0;"></div>
-        <div style="min-width:0;flex:1;">
-          <div id="vw-filename" style="color:#fff;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
-          <div id="vw-counter" style="color:#bbdefb;font-size:11px;margin-top:1px;"></div>
+        <!-- Download / Tags / Delete / Close -->
+        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+          ${toolBtn("download", SVG.download, "Download")}
+          ${toolBtn("tags",     SVG.tags,     "Edit tags")}
+          ${toolBtn("delete",   SVG.trash,    "Delete", true)}
+          <div style="width:1px;height:28px;background:rgba(255,255,255,.22);margin:0 2px;"></div>
+          <button data-action="close" title="Close (Esc)" style="
+            width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+            background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);
+            border-radius:2px;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
+            onmouseover="this.style.background='#e53935';this.style.borderColor='#e53935'"
+            onmouseout="this.style.background='rgba(255,255,255,.10)';this.style.borderColor='rgba(255,255,255,.22)'"
+          >${SVG.close}</button>
         </div>
       </div>
 
@@ -100,19 +117,17 @@ export function openViewer(items, startIndex = 0, options = {}) {
         <div id="vw-tags" style="display:flex;flex-wrap:wrap;gap:5px;flex:1;min-width:0;"></div>
       </div>
 
-      <!-- ── Bottom bar: controls ── -->
+      <!-- ── Bottom bar: prev/next + zoom + favorite ── -->
       <div style="
         background:#1a1a2e;border-top:1px solid rgba(255,255,255,.06);
         padding:10px 14px;display:flex;align-items:center;justify-content:center;
         gap:6px;flex-shrink:0;flex-wrap:wrap;">
 
-        <!-- Prev / Next -->
         ${navBtn("prev", SVG.prev, "Previous (←)")}
         ${navBtn("next", SVG.next, "Next (→)")}
 
         <div style="width:1px;height:28px;background:rgba(255,255,255,.18);margin:0 2px;"></div>
 
-        <!-- Zoom (images only) -->
         <div id="vw-zoom-btns" style="display:flex;gap:6px;">
           ${toolBtn("zoom-in",  SVG.zoomIn,  "Zoom in")}
           ${toolBtn("zoom-out", SVG.zoomOut, "Zoom out")}
@@ -120,7 +135,6 @@ export function openViewer(items, startIndex = 0, options = {}) {
 
         <div style="width:1px;height:28px;background:rgba(255,255,255,.18);margin:0 2px;"></div>
 
-        <!-- Favorite -->
         <button data-action="favorite" id="vw-fav-btn" title="Toggle favorite (F)" style="
           width:44px;height:44px;display:flex;align-items:center;justify-content:center;
           background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
@@ -128,26 +142,6 @@ export function openViewer(items, startIndex = 0, options = {}) {
           onmouseover="this.style.background='rgba(255,255,255,.22)'"
           onmouseout="this.style.background='rgba(255,255,255,.10)'"
         >${SVG.fav}</button>
-
-        <!-- Download -->
-        ${toolBtn("download", SVG.download, "Download")}
-
-        <!-- Tags -->
-        ${toolBtn("tags", SVG.tags, "Edit tags")}
-
-        <!-- Delete -->
-        ${toolBtn("delete", SVG.trash, "Delete", true)}
-
-        <div style="width:1px;height:28px;background:rgba(255,255,255,.18);margin:0 2px;"></div>
-
-        <!-- Close -->
-        <button data-action="close" title="Close (Esc)" style="
-          width:44px;height:44px;display:flex;align-items:center;justify-content:center;
-          background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);
-          border-radius:2px;cursor:pointer;color:#fff;flex-shrink:0;transition:background .15s;"
-          onmouseover="this.style.background='#e53935';this.style.borderColor='#e53935'"
-          onmouseout="this.style.background='rgba(255,255,255,.10)';this.style.borderColor='rgba(255,255,255,.22)'"
-        >${SVG.close}</button>
       </div>
     </div>
   `;
