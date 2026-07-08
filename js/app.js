@@ -41,6 +41,61 @@ async function initCategoryPage() {
   }
   window.addEventListener("beforeunload", () => urlCache.forEach((u) => URL.revokeObjectURL(u)), { once: true });
 
+  // Capture a frame from a video element, save thumbnailBlob to DB, swap card img
+  async function captureAndSaveVideoThumb(item, cardEl) {
+    if (!item.blobData) return;
+    const src = URL.createObjectURL(item.blobData);
+    const video = document.createElement("video");
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.src = src;
+
+    const blob = await new Promise((resolve) => {
+      const done = (b) => { URL.revokeObjectURL(src); resolve(b); };
+      video.addEventListener("error", () => done(null), { once: true });
+      video.addEventListener("loadedmetadata", () => {
+        video.currentTime = Math.min(1, (video.duration || 0) * 0.1);
+      }, { once: true });
+      const capture = () => {
+        try {
+          const c = document.createElement("canvas");
+          c.width = 480;
+          c.height = video.videoHeight ? Math.round(480 * video.videoHeight / video.videoWidth) : 270;
+          c.getContext("2d").drawImage(video, 0, 0, c.width, c.height);
+          c.toBlob((b) => done(b), "image/jpeg", 0.82);
+        } catch { done(null); }
+      };
+      video.addEventListener("seeked", capture, { once: true });
+      // fallback if seeked never fires
+      video.addEventListener("loadeddata", () => setTimeout(() => {
+        if (!video.seeking && video.readyState >= 2) capture();
+      }, 400), { once: true });
+    });
+
+    if (!blob) return;
+    item.thumbnailBlob = blob;
+    item.updatedAt = new Date().toISOString();
+    await putRow("media", item);
+
+    // swap the placeholder in the card with the real thumbnail
+    const thumbWrap = cardEl?.querySelector(".fk-media-thumb-wrap");
+    if (!thumbWrap) return;
+    const oldUrl = urlCache.get(item.id);
+    if (oldUrl) URL.revokeObjectURL(oldUrl);
+    const newUrl = URL.createObjectURL(blob);
+    urlCache.set(item.id, newUrl);
+    const placeholder = thumbWrap.querySelector(".fk-video-placeholder");
+    if (placeholder) {
+      const img = document.createElement("img");
+      img.src = newUrl;
+      img.className = "fk-media-thumb";
+      img.alt = item.fileName;
+      img.loading = "lazy";
+      placeholder.replaceWith(img);
+    }
+  }
+
   // ── Upload Modal ─────────────────────────────────────────────────────────
   function openUploadModal() {
     queue = [];
@@ -175,17 +230,18 @@ async function initCategoryPage() {
     gallery.innerHTML = items.map((item) => {
       const url = getUrl(item);
       const isVideo = item.mediaType === "video";
+      const needsCapture = isVideo && !item.thumbnailBlob;
       return `
         <div class="fk-media-card" data-action="open" data-id="${item.id}" style="cursor:pointer;">
           <div class="fk-media-thumb-wrap">
-            ${url
-              ? `<img src="${url}" class="fk-media-thumb" alt="${escapeHtml(item.fileName)}" loading="lazy" />`
-              : `<div class="fk-media-thumb" style="display:flex;align-items:center;justify-content:center;background:#1a1a2e;">
-                   <svg width="40" height="40" fill="none" stroke="#90caf9" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="#90caf9" stroke="none"/></svg>
-                 </div>`}
+            ${needsCapture
+              ? `<div class="fk-media-thumb fk-video-placeholder" data-id="${item.id}" style="display:flex;align-items:center;justify-content:center;background:#111;">
+                   <svg width="32" height="32" viewBox="0 0 24 24" fill="#555"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                 </div>`
+              : `<img src="${url}" class="fk-media-thumb" alt="${escapeHtml(item.fileName)}" loading="lazy" />`}
             ${isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-              <div style="width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.7);">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              <div style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.75);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="6 3 20 12 6 21 6 3"/></svg>
               </div>
             </div>` : ""}
             <div class="fk-media-overlay">
@@ -226,6 +282,13 @@ async function initCategoryPage() {
   async function refresh() {
     mediaItems = await fetchCategoryMedia(categoryId, state);
     renderGallery(mediaItems);
+    // generate missing video thumbnails in the background
+    mediaItems
+      .filter((item) => item.mediaType === "video" && !item.thumbnailBlob)
+      .forEach((item) => {
+        const cardEl = document.querySelector(`.fk-media-card[data-id="${item.id}"]`);
+        captureAndSaveVideoThumb(item, cardEl);
+      });
   }
 
   // ── Page shell ───────────────────────────────────────────────────────────
