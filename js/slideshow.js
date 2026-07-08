@@ -155,8 +155,10 @@ export function openSlideshow(items, intervalSeconds = 5) {
       // advance to next slide when video finishes
       videoEl.addEventListener("ended", () => {
         if (!playing) return;
-        index = (index + 1) % items.length;
+        if (index >= items.length - 1) { close(); return; }
+        index = index + 1;
         renderMedia();
+        startTimer();
       }, { once: true });
     } else {
       stage.innerHTML = currentUrl
@@ -202,7 +204,11 @@ export function openSlideshow(items, intervalSeconds = 5) {
     }
     startProgress();
     timer = setInterval(() => {
-      index = (index + 1) % items.length;
+      if (index >= items.length - 1) {
+        close();
+        return;
+      }
+      index = index + 1;
       renderMedia();
       startTimer();
     }, intervalSeconds * 1000);
@@ -213,7 +219,7 @@ export function openSlideshow(items, intervalSeconds = 5) {
     stopProgress();
     const videoEl = document.getElementById("ss-video");
     if (videoEl) videoEl.pause();
-    index = (i + items.length) % items.length;
+    index = Math.max(0, Math.min(i, items.length - 1));
     renderMedia();
     if (playing) startTimer();
     showUI();
