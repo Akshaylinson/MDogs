@@ -237,55 +237,73 @@ async function initCategoryPage() {
           <span style="color:#212121;font-weight:600;">${escapeHtml(category.name)}</span>
         </div>
 
-        <!-- Filter bar — icon-only buttons with tooltips -->
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <!-- Filter bar -->
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">
 
-          <!-- Search (icon + expanding input) -->
+          <!-- Search -->
           <div style="display:flex;align-items:center;background:#fff;border:1px solid #d0d0d0;border-radius:2px;overflow:hidden;height:36px;">
             <span style="padding:0 10px;color:#888;display:flex;align-items:center;flex-shrink:0;">
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             </span>
             <input id="search" type="text" placeholder="Search…"
-              style="border:none;outline:none;font-size:13px;color:#333;background:transparent;width:130px;padding-right:8px;" />
+              style="border:none;outline:none;font-size:13px;color:#333;background:transparent;width:110px;padding-right:8px;" />
           </div>
 
-          <!-- Media type — icon toggle group -->
+          <!-- Media type toggle -->
           <div style="display:flex;border:1px solid #d0d0d0;border-radius:2px;overflow:hidden;height:36px;background:#fff;">
             <button id="typeAll" title="All media" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;background:#2874f0;cursor:pointer;">
               <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             </button>
-            <button id="typeImage" title="Images only" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;border-left:1px solid #d0d0d0;background:#fff;cursor:pointer;">
-              <svg width="16" height="16" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            </button>
-            <button id="typeVideo" title="Videos only" style="width:36px;display:flex;align-items:center;justify-content:center;border:none;border-left:1px solid #d0d0d0;background:#fff;cursor:pointer;">
-              <svg width="16" height="16" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-            </button>
           </div>
-
-          <!-- Tag filter — tag icon button that opens a small dropdown -->
-          <div style="position:relative;">
-            <button id="tagFilterBtn" title="Filter by tag" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #d0d0d0;border-radius:2px;cursor:pointer;">
-              <svg width="16" height="16" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-            </button>
-            <select id="tag" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
-              <option value="">All tags</option>
-            </select>
-          </div>
-
-          <!-- Favorites -->
-          <button id="favoriteFilter" title="Favorites only" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #d0d0d0;border-radius:2px;cursor:pointer;">
-            <svg id="favIcon" width="16" height="16" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </button>
 
           <!-- Upload -->
-          <button id="openUpload" title="Upload media" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#ff9f00;border:none;border-radius:2px;cursor:pointer;">
+          <button id="openUpload" title="Upload media" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#ff9f00;border:none;border-radius:2px;cursor:pointer;flex-shrink:0;">
             <svg width="16" height="16" fill="none" stroke="white" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           </button>
 
           <!-- Slideshow -->
-          <button id="slideshow" title="Start slideshow" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#2874f0;border:none;border-radius:2px;cursor:pointer;">
+          <button id="slideshow" title="Start slideshow" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#2874f0;border:none;border-radius:2px;cursor:pointer;flex-shrink:0;">
             <svg width="16" height="16" fill="white" stroke="white" stroke-width="1" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           </button>
+
+          <!-- Hamburger filter menu -->
+          <div style="position:relative;">
+            <button id="filterMenuBtn" title="Filters" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #d0d0d0;border-radius:2px;cursor:pointer;flex-shrink:0;">
+              <svg width="16" height="16" fill="none" stroke="#555" stroke-width="2.2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <!-- Dropdown -->
+            <div id="filterMenu" style="
+              display:none;position:absolute;top:42px;right:0;z-index:100;
+              background:#fff;border:1px solid #e0e0e0;border-radius:4px;
+              box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:180px;overflow:hidden;">
+
+              <div style="padding:8px 12px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #f0f0f0;">Media Type</div>
+
+              <button id="typeImage" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:#fff;cursor:pointer;font-size:13px;color:#333;">
+                <svg width="15" height="15" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                Images only
+              </button>
+              <button id="typeVideo" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:#fff;cursor:pointer;font-size:13px;color:#333;border-top:1px solid #f5f5f5;">
+                <svg width="15" height="15" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                Videos only
+              </button>
+
+              <div style="padding:8px 12px;font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.08em;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-top:4px;">Filter</div>
+
+              <div style="padding:6px 14px;border-top:1px solid #f5f5f5;display:flex;align-items:center;gap:10px;">
+                <svg width="14" height="14" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                <select id="tag" style="flex:1;border:1px solid #e0e0e0;border-radius:2px;font-size:12px;padding:5px 6px;color:#333;outline:none;background:#fff;cursor:pointer;">
+                  <option value="">All tags</option>
+                </select>
+              </div>
+
+              <button id="favoriteFilter" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:#fff;cursor:pointer;font-size:13px;color:#333;border-top:1px solid #f5f5f5;">
+                <svg id="favIcon" width="15" height="15" fill="none" stroke="#555" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span id="favFilterLabel">Favorites only</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -310,6 +328,23 @@ async function initCategoryPage() {
     </div>
   `;
 
+  // Hamburger filter menu toggle
+  const filterMenuBtn = document.getElementById("filterMenuBtn");
+  const filterMenu = document.getElementById("filterMenu");
+  filterMenuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const open = filterMenu.style.display === "block";
+    filterMenu.style.display = open ? "none" : "block";
+    filterMenuBtn.style.background = open ? "#fff" : "#e8f0fe";
+    filterMenuBtn.style.borderColor = open ? "#d0d0d0" : "#2874f0";
+  });
+  document.addEventListener("click", () => {
+    filterMenu.style.display = "none";
+    filterMenuBtn.style.background = "#fff";
+    filterMenuBtn.style.borderColor = "#d0d0d0";
+  });
+  filterMenu.addEventListener("click", (e) => e.stopPropagation());
+
   // Navbar search
   const navSearch = document.getElementById("navbar-search");
   if (navSearch) navSearch.addEventListener("input", (e) => { state.search = e.target.value; refresh(); });
@@ -320,14 +355,18 @@ async function initCategoryPage() {
   // Type icon toggle helpers
   function setTypeActive(type) {
     state.type = type;
-    const map = { all: "typeAll", image: "typeImage", video: "typeVideo" };
-    Object.entries(map).forEach(([t, id]) => {
-      const btn = document.getElementById(id);
-      if (!btn) return;
-      const active = t === type;
-      btn.style.background = active ? "#2874f0" : "#fff";
-      btn.querySelector("svg").setAttribute("stroke", active ? "white" : "#555");
-    });
+    // Grid button: blue when "all", white otherwise
+    const allBtn = document.getElementById("typeAll");
+    if (allBtn) {
+      allBtn.style.background = type === "all" ? "#2874f0" : "#fff";
+      allBtn.querySelector("svg").setAttribute("stroke", type === "all" ? "white" : "#555");
+    }
+    // Dropdown items: highlight active
+    const imgBtn = document.getElementById("typeImage");
+    const vidBtn = document.getElementById("typeVideo");
+    if (imgBtn) imgBtn.style.background = type === "image" ? "#e8f0fe" : "#fff";
+    if (vidBtn) vidBtn.style.background = type === "video" ? "#e8f0fe" : "#fff";
+    filterMenu.style.display = "none";
     refresh();
   }
   document.getElementById("typeAll").addEventListener("click", () => setTypeActive("all"));
@@ -350,12 +389,12 @@ async function initCategoryPage() {
     if (btn?.id === "favoriteFilter") {
       state.favorites = !state.favorites;
       const favIcon = document.getElementById("favIcon");
-      btn.style.background = state.favorites ? "#e53935" : "#fff";
-      btn.style.borderColor = state.favorites ? "#e53935" : "#d0d0d0";
-      if (favIcon) {
-        favIcon.setAttribute("fill", state.favorites ? "white" : "none");
-        favIcon.setAttribute("stroke", state.favorites ? "white" : "#555");
-      }
+      const favLabel = document.getElementById("favFilterLabel");
+      const favBtn = document.getElementById("favoriteFilter");
+      favBtn.style.background = state.favorites ? "#fce4e4" : "#fff";
+      if (favIcon) { favIcon.setAttribute("fill", state.favorites ? "#e53935" : "none"); favIcon.setAttribute("stroke", state.favorites ? "#e53935" : "#555"); }
+      if (favLabel) favLabel.style.color = state.favorites ? "#e53935" : "#333";
+      filterMenu.style.display = "none";
       await refresh();
       return;
     }
