@@ -37,23 +37,20 @@ export async function initFavoritesPage() {
   app.innerHTML = `
     <div style="max-width:1280px;margin:0 auto;padding:24px 20px 40px;">
 
-      <!-- Stats row -->
-      <div style="display:flex;flex-wrap:wrap;gap:32px;padding:8px 0 24px;border-bottom:1px solid #e0e0e0;margin-bottom:24px;">
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Favorites</div>
-          <div style="font-size:28px;font-weight:700;color:#e53935;margin-top:2px;">${favorites.length}</div>
+      <!-- Stats box -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px;">
+        <div style="padding:14px 10px;text-align:center;border-right:1px solid #f0f0f0;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Favorites</div>
+          <div style="font-size:22px;font-weight:700;color:#e53935;margin-top:4px;line-height:1;">${favorites.length}</div>
         </div>
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Images</div>
-          <div style="font-size:28px;font-weight:700;color:#212121;margin-top:2px;">${totalImages}</div>
+        <div style="padding:14px 10px;text-align:center;border-right:1px solid #f0f0f0;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Media</div>
+          <div style="font-size:22px;font-weight:700;color:#212121;margin-top:4px;line-height:1;">${totalImages + totalVideos}</div>
+          <div style="font-size:10px;color:#aaa;margin-top:3px;">${totalImages} img &middot; ${totalVideos} vid</div>
         </div>
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Videos</div>
-          <div style="font-size:28px;font-weight:700;color:#212121;margin-top:2px;">${totalVideos}</div>
-        </div>
-        <div>
-          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.06em;">Categories</div>
-          <div style="font-size:28px;font-weight:700;color:#212121;margin-top:2px;">${categories.length}</div>
+        <div style="padding:14px 10px;text-align:center;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.07em;">Categories</div>
+          <div style="font-size:22px;font-weight:700;color:#2874f0;margin-top:4px;line-height:1;">${categories.length}</div>
         </div>
       </div>
 
