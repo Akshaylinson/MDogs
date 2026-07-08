@@ -176,7 +176,7 @@ async function initCategoryPage() {
       const url = getUrl(item);
       const isVideo = item.mediaType === "video";
       return `
-        <div class="fk-media-card" data-id="${item.id}">
+        <div class="fk-media-card" data-action="open" data-id="${item.id}" style="cursor:pointer;">
           <div class="fk-media-thumb-wrap">
             ${url
               ? (isVideo
@@ -186,25 +186,23 @@ async function initCategoryPage() {
                    <svg width="32" height="32" fill="none" stroke="#90caf9" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                  </div>`}
             <div class="fk-media-overlay">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="display:flex;justify-content:flex-start;align-items:flex-start;">
                 <span class="fk-chip">${isVideo ? "▶ Video" : "🖼 Image"}</span>
-                <button data-action="favorite" data-id="${item.id}" class="fk-chip ${item.isFavorite ? "fk-chip-fav" : ""}">${item.isFavorite ? "♥ Saved" : "♡ Save"}</button>
               </div>
-              <div style="display:flex;justify-content:space-between;align-items:flex-end;">
-                <p style="font-size:11px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%;">${escapeHtml(item.fileName)}</p>
-                <button data-action="open" data-id="${item.id}" class="fk-chip">Preview</button>
+              <div style="display:flex;justify-content:center;align-items:flex-end;padding-bottom:6px;">
+                <button data-action="favorite" data-id="${item.id}" title="${item.isFavorite ? "Remove from favorites" : "Add to favorites"}" style="
+                  background:none;border:none;cursor:pointer;padding:4px;line-height:1;
+                  filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));transition:transform .15s;"
+                  onmouseover="this.style.transform='scale(1.2)'"
+                  onmouseout="this.style.transform='scale(1)'">
+                  <svg width="32" height="32" viewBox="0 0 24 24"
+                    fill="${item.isFavorite ? "#e53935" : "rgba(255,255,255,.25)"}"
+                    stroke="${item.isFavorite ? "#e53935" : "#fff"}"
+                    stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                </button>
               </div>
-            </div>
-          </div>
-          <div style="padding:8px 10px;">
-            <p style="font-size:12px;font-weight:600;color:#212121;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.fileName)}</p>
-            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">
-              ${(item.tags || []).slice(0, 3).map((t) => `<span style="background:#e3f2fd;color:#1565c0;font-size:10px;padding:2px 6px;border-radius:2px;">${escapeHtml(t)}</span>`).join("")}
-            </div>
-            <div style="display:flex;gap:5px;margin-top:8px;">
-              <button data-action="edit-tags" data-id="${item.id}" style="flex:1;height:28px;background:#fff;border:1px solid #d0d0d0;color:#555;font-size:11px;border-radius:2px;cursor:pointer;">Tags</button>
-              <button data-action="download" data-id="${item.id}" style="flex:1;height:28px;background:#fff;border:1px solid #d0d0d0;color:#555;font-size:11px;border-radius:2px;cursor:pointer;">↓</button>
-              <button data-action="delete" data-id="${item.id}" style="height:28px;padding:0 8px;background:#fff;border:1px solid #ffcdd2;color:#e53935;font-size:11px;border-radius:2px;cursor:pointer;">✕</button>
             </div>
           </div>
         </div>
@@ -342,18 +340,18 @@ async function initCategoryPage() {
 
   app.addEventListener("click", async (e) => {
     const btn = e.target.closest("button");
-    if (!btn) return;
+    const card = e.target.closest(".fk-media-card[data-action='open']");
 
-    if (btn.id === "openUpload") { openUploadModal(); return; }
+    if (btn?.id === "openUpload") { openUploadModal(); return; }
 
-    if (btn.id === "slideshow") {
+    if (btn?.id === "slideshow") {
       const items = await fetchCategoryMedia(categoryId, state);
       const interval = Number(await getSetting("slideshowInterval", 5));
       openSlideshow(items, interval);
       return;
     }
 
-    if (btn.id === "favoriteFilter") {
+    if (btn?.id === "favoriteFilter") {
       state.favorites = !state.favorites;
       const favIcon = document.getElementById("favIcon");
       btn.style.background = state.favorites ? "#e53935" : "#fff";
@@ -366,12 +364,23 @@ async function initCategoryPage() {
       return;
     }
 
-    const action = btn.dataset.action;
-    if (!action) return;
-    const item = mediaItems.find((m) => m.id === btn.dataset.id);
-    if (!item) return;
+    // Favorite button on card
+    if (btn?.dataset.action === "favorite") {
+      e.stopPropagation();
+      const item = mediaItems.find((m) => m.id === btn.dataset.id);
+      if (!item) return;
+      item.isFavorite = !item.isFavorite;
+      item.updatedAt = new Date().toISOString();
+      await putRow("media", item);
+      notify(item.isFavorite ? "Added to favorites" : "Removed from favorites");
+      await refresh();
+      return;
+    }
 
-    if (action === "open") {
+    // Click anywhere on card → open viewer
+    if (card && !btn) {
+      const item = mediaItems.find((m) => m.id === card.dataset.id);
+      if (!item) return;
       openViewer(mediaItems, mediaItems.findIndex((m) => m.id === item.id), {
         onChange: refresh,
         onDelete: refresh,
@@ -386,42 +395,6 @@ async function initCategoryPage() {
           notify("Tags updated");
         },
       });
-      return;
-    }
-
-    if (action === "favorite") {
-      item.isFavorite = !item.isFavorite;
-      item.updatedAt = new Date().toISOString();
-      await putRow("media", item);
-      notify(item.isFavorite ? "Added to favorites" : "Removed from favorites");
-      await refresh();
-      return;
-    }
-
-    if (action === "delete") {
-      if (confirm(`Delete "${item.fileName}"?`)) {
-        await delRow("media", item.id);
-        notify("Media deleted");
-        await refresh();
-      }
-      return;
-    }
-
-    if (action === "edit-tags") {
-      const val = prompt("Comma-separated tags:", (item.tags || []).join(", "));
-      if (val == null) return;
-      item.tags = val.split(",").map((t) => t.trim()).filter(Boolean);
-      item.updatedAt = new Date().toISOString();
-      await putRow("media", item);
-      await refreshTags();
-      await refresh();
-      notify("Tags updated");
-      return;
-    }
-
-    if (action === "download") {
-      const { downloadBlob } = await import("./helpers.js");
-      downloadBlob(item.blobData, item.fileName);
     }
   });
 
