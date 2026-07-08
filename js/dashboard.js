@@ -147,9 +147,9 @@ function openAddCategoryModal(onCreated) {
     submitBtn.disabled = true;
     submitBtn.textContent = "Creating…";
     const thumbnailBlob = selectedFile || null;
-    await createCategory(name, thumbnailBlob);
+    const newCategory = await createCategory(name, thumbnailBlob);
     close();
-    onCreated();
+    onCreated(newCategory);
   });
 
   // Enter key submits
@@ -180,7 +180,16 @@ export async function initDashboard() {
   }
   window.addEventListener("beforeunload", () => coverUrls.forEach((u) => URL.revokeObjectURL(u)), { once: true });
 
-  const openModal = () => openAddCategoryModal(() => location.reload());
+  const openModal = () => openAddCategoryModal(async (newCategory) => {
+    // Build card stats for the new category (no media yet)
+    const card = { ...newCategory, imageCount: 0, videoCount: 0, favoriteCount: 0, cover: null };
+    if (newCategory.thumbnailBlob) {
+      coverUrls.set(newCategory.id, URL.createObjectURL(newCategory.thumbnailBlob));
+    }
+    cards.unshift(card);          // prepend so it appears first under "Newest"
+    categories.unshift(newCategory);
+    render();
+  });
 
   const render = () => {
     const filtered = [...cards]
@@ -343,14 +352,27 @@ export async function initDashboard() {
     if (btn.dataset.action === "rename") {
       const cat = categories.find((c) => c.id === btn.dataset.id);
       const name = prompt("Rename category:", cat?.name || "");
-      if (name && cat) { await renameCategory(cat.id, name); location.reload(); }
+      if (name && cat) {
+        const updated = await renameCategory(cat.id, name);
+        if (updated) {
+          const idx = cards.findIndex((c) => c.id === cat.id);
+          if (idx !== -1) { cards[idx].name = updated.name; cards[idx].slug = updated.slug; }
+          render();
+        }
+      }
       return;
     }
 
     if (btn.dataset.action === "delete") {
       if (confirm("Delete this category and all its media?")) {
         await deleteCategory(btn.dataset.id);
-        location.reload();
+        const idx = cards.findIndex((c) => c.id === btn.dataset.id);
+        if (idx !== -1) cards.splice(idx, 1);
+        if (coverUrls.has(btn.dataset.id)) {
+          URL.revokeObjectURL(coverUrls.get(btn.dataset.id));
+          coverUrls.delete(btn.dataset.id);
+        }
+        render();
       }
     }
   });

@@ -1,29 +1,60 @@
-﻿import { getAll, put, del, getById } from "./db.js";
+import { getAll, put, del, bulkDel, getById, getFirstByIndex } from "./db.js";
 import { uid, slugify } from "./helpers.js";
 import { notify } from "./notifications.js";
 
+// Use the slug index instead of a full table scan
 async function uniqueSlug(name, ignoreId = null) {
   const base = slugify(name) || "category";
-  const categories = await getAll("categories");
-  const taken = new Set(categories.filter((category) => category.id !== ignoreId).map((category) => category.slug));
-  if (!taken.has(base)) return base;
-  let suffix = 2;
-  while (taken.has(`${base}-${suffix}`)) suffix += 1;
-  return `${base}-${suffix}`;
+  let candidate = base;
+  let suffix = 1;
+  while (true) {
+    const existing = await getFirstByIndex("categories", "slug", candidate);
+    if (!existing || existing.id === ignoreId) return candidate;
+    suffix += 1;
+    candidate = `${base}-${suffix}`;
+  }
+}
+
+// Compress a thumbnail File/Blob to a small JPEG blob before storing
+async function compressThumbnail(file) {
+  if (!file) return null;
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const MAX = 240; // small enough to be fast, big enough to look good
+      const ratio = Math.min(MAX / img.width, MAX / img.height, 1);
+      const canvas = document.createElement("canvas");
+      canvas.width  = Math.round(img.width  * ratio);
+      canvas.height = Math.round(img.height * ratio);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => resolve(blob), "image/jpeg", 0.75);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    img.src = url;
+  });
 }
 
 export async function listCategories() {
   return getAll("categories");
 }
 
-export async function createCategory(name, thumbnailBlob = null) {
+export async function createCategory(name, thumbnailFile = null) {
   const trimmed = name.trim();
   if (!trimmed) return null;
+
+  // Run slug lookup and thumbnail compression in parallel
+  const [slug, thumbnailBlob] = await Promise.all([
+    uniqueSlug(trimmed),
+    compressThumbnail(thumbnailFile),
+  ]);
+
   const now = new Date().toISOString();
   const category = {
     id: uid("cat"),
     name: trimmed,
-    slug: await uniqueSlug(trimmed),
+    slug,
     coverMediaId: null,
     thumbnailBlob: thumbnailBlob || null,
     createdAt: now,
@@ -49,9 +80,11 @@ export async function renameCategory(id, name) {
 
 export async function deleteCategory(id) {
   const media = await getAll("media");
-  for (const item of media.filter((entry) => entry.categoryId === id)) {
-    await del("media", item.id);
-  }
-  await del("categories", id);
+  const ids = media.filter((m) => m.categoryId === id).map((m) => m.id);
+  // Delete all media in one transaction, then delete the category
+  await Promise.all([
+    bulkDel("media", ids),
+    del("categories", id),
+  ]);
   notify("Category deleted");
 }
