@@ -48,7 +48,7 @@ async function initCategoryPage() {
       <div id="upload-backdrop" style="
         position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;
         display:flex;align-items:center;justify-content:center;padding:16px;">
-        <div style="background:#fff;border-radius:4px;width:100%;max-width:500px;box-shadow:0 8px 40px rgba(0,0,0,.22);overflow:hidden;">
+        <div style="background:#fff;border-radius:4px;width:100%;max-width:500px;box-shadow:0 8px 40px rgba(0,0,0,.22);overflow:hidden;display:flex;flex-direction:column;max-height:90vh;">
 
           <!-- Header -->
           <div style="background:#2874f0;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
@@ -62,7 +62,7 @@ async function initCategoryPage() {
           </div>
 
           <!-- Body -->
-          <div style="padding:20px;display:flex;flex-direction:column;gap:16px;">
+          <div style="padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;flex:1;min-height:0;">
 
             <!-- Dropzone -->
             <div id="upload-dropzone" style="
@@ -81,7 +81,7 @@ async function initCategoryPage() {
             </div>
 
             <!-- Queue list -->
-            <div id="upload-queue"></div>
+            <div id="upload-queue" style="max-height:240px;overflow-y:auto;"></div>
 
           </div>
 
