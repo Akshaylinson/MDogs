@@ -1,9 +1,7 @@
-const SESSION_KEY = "mda_auth";
-const CORRECT_PW  = "Gu7vRG9m3FjDi9S2025";
+const CORRECT_PW = "Gu7vRG9m3FjDi9S2025";
 
 export function requireAuth() {
   return new Promise((resolve) => {
-    if (sessionStorage.getItem(SESSION_KEY) === "1") { resolve(); return; }
 
     // Hide page content until authenticated
     document.body.style.visibility = "hidden";
@@ -105,7 +103,6 @@ export function requireAuth() {
       if (!val) { showError("Please enter the password."); return; }
 
       if (val === CORRECT_PW) {
-        sessionStorage.setItem(SESSION_KEY, "1");
         overlay.remove();
         resolve();
       } else {
