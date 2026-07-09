@@ -1,3 +1,4 @@
+import { requireAuth } from "./auth.js";
 import { initDB, initDefaults, getAll, getSetting } from "./db.js";
 import { initTheme } from "./theme.js";
 import { getPageName, getQueryParam, escapeHtml } from "./helpers.js";
@@ -612,6 +613,7 @@ async function initCategoryPage() {
 }
 
 async function main() {
+  await requireAuth();
   await initDB();
   await initDefaults();
   await initTheme();
